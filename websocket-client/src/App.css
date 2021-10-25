@@ -1,7 +1,37 @@
 .App {
   text-align: center;
+  display: flex;
+  height: 100%;
 }
 
+.Button{
+  border: solid red; 
+}
+
+.Chat {
+  flex: 3;
+  background-color: #9F9;
+  height: 100%;
+}
+
+.ChatLog {
+  background-color: #99F;
+}
+
+.ChatInput {
+  background-color: #550;
+  height: 2em;
+  position: absolute;
+  bottom: 0;
+}
+
+.UserList {
+  flex: 1;
+  background-color: #F99;
+}
+
+
+/* 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -36,3 +66,5 @@
     transform: rotate(360deg);
   }
 }
+
+ */
