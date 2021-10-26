@@ -1,12 +1,12 @@
 import React from 'react'
-import ChatLog from './ChatLog'
+import ChatMessages from './ChatMessages'
 import ChatInput from './ChatInput'
 
 const Chat = (props) => {
     return (
         <div className="Chat">
-            <ChatLog chatLog={props.chatLog}/>
-            <ChatInput handleSubmit={props.handleSubmit} setMessage={props.setMessage}/>
+            <ChatMessages chatMessages={props.chatMessages} messageKey={props.messageKey}/>
+            <ChatInput setInput={props.setInput} input={props.input} socket={props.socket}/>
         </div>
     )
 }

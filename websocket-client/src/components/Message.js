@@ -2,7 +2,7 @@ import React from 'react'
 
 const Message = (props) => {
     return (
-        <div className="Message" key={props.key}>
+        <div className="Message">
             {/* <div>
                 <p>{props.id}</p>
             </div>

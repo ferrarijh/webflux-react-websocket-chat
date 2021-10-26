@@ -16,8 +16,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
     @Override
     public Mono<Void> handle(WebSocketSession session) {
         return session.send(
-                session.receive().doOnNext(wsMessage -> log.info("received: "+wsMessage.getPayloadAsText()))
-                    .map(wsm -> session.textMessage(wsm.getPayloadAsText()))
+                session.receive().doOnNext(wsMessage -> log.info("["+session.hashCode()+"] received: "+wsMessage.getPayloadAsText())).map(wsm -> session.textMessage(wsm.getPayloadAsText()))
         );
     }
 }

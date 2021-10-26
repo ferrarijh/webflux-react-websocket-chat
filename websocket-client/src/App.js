@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import Chat from './components/Chat'
 import UserList from './components/UserList'
 import './App.css'
@@ -6,41 +6,26 @@ import './App.css'
 function App() {
 
   const [users, setUsers] = useState([])
-  const [chatLog, setChatLog] = useState([])
-  const [message, setMessage] = useState("")
-
-  const socket = new WebSocket("ws://localhost:8080/chat")
+  const [chatMessages, setChatMessages] = useState([])
+  const [input, setInput] = useState("")
+  const [socket, _] = useState(new WebSocket("ws://localhost:8080/chat"))
   
-  socket.onopen = (e) => {
-    console.log("Opened connection!")
-  }
-  socket.onmessage = (ev) => {
-    console.log("received: ", ev.data)
-    let received = JSON.parse(ev.data)
-    // if(received.content === undefined)
-    //   setUsers(received.users)
-    // else
-    //   setChatLog((prev) => [...prev, JSON.parse(received.message)])
-    setChatLog((prev) => [...prev, ev.data])
-  }
-  socket.onclose = (e) => {
-    console.log("Closed connection.")
-  }
-  socket.onerror = (err) => {
-    console.log("error: ", err.message)
-  }
+  useEffect(()=>{
+    socket.onopen = e => console.log("Opened connection!")
+    socket.onmessage = onOpen
+    socket.onclose = e => console.log("Closed connection.")
+    socket.onerror = err => console.log("error: ", err.message)
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  }, [socket])
 
-    socket.send(message);
-    console.log("sent: ", message);
+  const onOpen = (e) => {
+    console.log("received: ", e.data)
+    setChatMessages((prevMessages) => [...prevMessages, e.data])
   }
 
   return (
     <div className="App">
-      {/* <ChatInput onSubmit={handleClick} input={message} onChange={setMessage}/> */}
-      <Chat handleSubmit={handleSubmit} setMessage={setMessage} chatLog={chatLog}/>
+      <Chat setInput={setInput} input={input} chatMessages={chatMessages} socket={socket}/>
       <UserList users={users}/>
     </div>
   );
