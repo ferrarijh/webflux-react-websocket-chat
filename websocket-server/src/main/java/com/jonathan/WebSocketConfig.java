@@ -14,10 +14,15 @@ import java.util.Map;
 public class WebSocketConfig {
 
     @Bean
-    public HandlerMapping handlerMapping(){
+    WebSocketHandler webSocketHandler(){
+        return new MyWebSocketHandler();
+    }
+
+    @Bean
+    public HandlerMapping handlerMapping(WebSocketHandler handler){
 
         Map<String, WebSocketHandler> mapping = new HashMap<>();
-        mapping.put("/chat", new MyWebSocketHandler());
+        mapping.put("/chat", handler);
 
         return new SimpleUrlHandlerMapping(mapping, -1);
     }

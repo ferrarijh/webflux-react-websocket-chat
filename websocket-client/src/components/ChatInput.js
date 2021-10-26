@@ -5,6 +5,7 @@ const ChatInput = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         props.socket.send(props.input)
+        props.setInput("")
     }
 
     return (
