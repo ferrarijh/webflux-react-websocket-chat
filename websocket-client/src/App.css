@@ -1,7 +1,7 @@
 .App {
   text-align: center;
-  display: flex;
   height: 100%;
+  display: flex;
 }
 
 .Button{
@@ -9,27 +9,40 @@
 }
 
 .Chat {
+  /* float: left; */
+  position: relative;
   flex: 3;
   background-color: #9F9;
-  height: 100%;
+
+  display: flex;
+  flex-direction: column;
 }
 
-.ChatLog {
+.Chat > .ChatMessages {
   background-color: #99F;
+  flex: 1;
+  height: 100%;
+  overflow: auto;
 }
 
-.ChatInput {
+.Chat > .ChatInput {
   background-color: #550;
   height: 2em;
-  position: absolute;
-  bottom: 0;
+  width: 100%;
+}
+
+.Chat > .ChatMessages > .Message {
+  background-color: #888;
+  height: 2em;
 }
 
 .UserList {
+  /* float: left; */
   flex: 1;
   background-color: #F99;
+  height: 100%;
+  overflow: auto;
 }
-
 
 /* 
 .App-logo {
