@@ -34,7 +34,6 @@ public class MyWebSocketHandler implements WebSocketHandler {
                 sink.asFlux().map(session::textMessage)
                         .doOnNext(wsm->log.info("sending from sink: "+wsm.getPayloadAsText()))
         );
-
     }
 
     private static class StreamSubscriber implements Subscriber<String> {

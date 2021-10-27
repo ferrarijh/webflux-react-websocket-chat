@@ -4,6 +4,7 @@ const ChatInput = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        e.target.reset();
         props.socket.send(props.input)
         props.setInput("")
     }
@@ -12,7 +13,7 @@ const ChatInput = (props) => {
         <div className="ChatInput">
             <form onSubmit={handleSubmit}>
             <input type="text" onChange={e=>props.setInput(e.target.value)}/>
-            <input type="submit" className="Button" value="Send"/>
+            <button type="submit" className="Button">Send</button>
             </form>
         </div>
     )
