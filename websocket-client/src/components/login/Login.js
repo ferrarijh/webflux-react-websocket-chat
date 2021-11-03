@@ -1,14 +1,12 @@
-import React from 'react'
 import * as Message from '../chat/Message'
 import './Login.css'
-import {Redirect} from 'react-router-dom'
 
 const Login = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        let usernameSubmit = e.target.value
-        console.log("new Date().toISOString(): ", new Date().toISOString())
+        let usernameSubmit = e.currentTarget.username.value
+        let now = new Date().toISOString()
 
         fetch("http://localhost:8080/login", {
             method: 'POST',
@@ -17,36 +15,33 @@ const Login = (props) => {
             },
             body: JSON.stringify({
                 username: usernameSubmit,
-                content: "",
-                date: new Date().toISOString(),
-                type: Message.USER_IN,
+                content: "incoming with normal http...",
+                date: now,
+                type: Message.IN_REQ
             })
         }).then(response => response.json())
-        .then((msg)=>{
-            if(msg.type === Message.IN_OK)
-                onLogin(usernameSubmit)
+        .then(data => {
+            console.log("data: ", data)
+            if(data.type === Message.IN_OK)
+                onInOk(data)
             else
-                console.log('Login rejected...')
+                console.log('Login rejected... Response type is '+data.type)
         }).catch(error => console.log('Error: ', error))
     }
 
-    const onLogin = (username) => {
+    const onInOk = async (data) => {
+        props.setUsername(data.username)
+        props.setUsers(data.userList)
         props.setIsAuth(true)
-        props.setUsername(username)
     }
 
     return (
         <div className="Login">
-        {props.isAuth ?
-            <Redirect to="/chat"/> : 
             <form onSubmit={handleSubmit}>
-                <div>
-                    <span>username:</span><br/>
-                    <input type="text"/>
-                    <button type="submit">Join Chat</button>
-                </div>
+                <span>username:</span><br/>
+                <input type="text" name='username'/>
+                <button type="submit">Join Chat</button>
             </form>
-        }
         </div>
     )
 }

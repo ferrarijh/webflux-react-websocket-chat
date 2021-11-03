@@ -5,8 +5,8 @@ import ChatInput from './ChatInput'
 const ChatLeft = (props) => {
     return (
         <div className="ChatLeft">
-            <ChatMessages chatMessages={props.chatMessages} messageKey={props.messageKey}/>
-            <ChatInput setInput={props.setInput} input={props.input} socket={props.socket}/>
+            <ChatMessages chatMessages={props.chatMessages} />
+            <ChatInput username={props.username} socket={props.socket}/>
         </div>
     )
 }

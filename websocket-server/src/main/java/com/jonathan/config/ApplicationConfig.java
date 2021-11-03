@@ -13,14 +13,14 @@ public class ApplicationConfig implements WebFluxConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry){
         corsRegistry.addMapping("/**")
-                .allowedOrigins("http://localhost:3001")
+                .allowedOrigins("http://localhost:3000")
                 .allowedMethods("POST");
     }
 
-    @Bean
+//    @Bean
     ObjectMapper objectMapper(){
-        return new ObjectMapper().registerModule(new JavaTimeModule());
+        JavaTimeModule module = new JavaTimeModule();
+        return new ObjectMapper().registerModule(module);
     }
-
 
 }

@@ -13,7 +13,6 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
@@ -31,12 +30,16 @@ public class MyWebSocketHandler implements WebSocketHandler {
     public Mono<Void> handle(WebSocketSession session) {
 
         //subscriber receives incoming messages from session
-        StreamSubscriber subscriber = new StreamSubscriber(mapper, sink);
+//        StreamSubscriber subscriber = new StreamSubscriber(mapper, sink);
+        log.info("users.size(): "+users.size() + "session: " + session.getId());
 
+        //                    log.info("session received: "+wsm.getPayloadAsText());
         session.receive()
-                .map(wsm -> this.mapperRead(wsm.getPayloadAsText()))
-                .doOnNext(msg -> handleUserInOut(msg, session))
-                .subscribe(subscriber::onNext, subscriber::onError, subscriber::onComplete);
+                .map(WebSocketMessage::getPayloadAsText)
+                .doOnNext(sink::tryEmitNext)
+                .map(this::mapperRead)
+                .doOnNext(msg -> handleInOut(msg, session))
+                .subscribe();
 
         return session.send(
                 sink.asFlux().map(session::textMessage)
@@ -44,15 +47,33 @@ public class MyWebSocketHandler implements WebSocketHandler {
         );
     }
 
-    private void handleUserInOut(Message msg, WebSocketSession session){
-        if(msg.getType().equals(Message.Type.USER_IN)) {
+    private void handleInOut(Message msg, WebSocketSession session){
+        if(msg.getType().equals(Message.Type.USER_IN))
             users.put(msg.getUsername(), session);
-            session.send(Mono.just(new ArrayList<>(users.keySet()))
-                    .map(list -> this.listToWebSocketMessage(list, session))
-            ).subscribe();
-        }
         else if(msg.getType().equals(Message.Type.USER_OUT))
             users.remove(msg.getUsername());
+
+//        if(msg.getType().equals(Message.Type.USER_IN)) {
+//            log.info("msg.username: "+ msg.getUsername());
+//            log.info("msg: "+msg+", session: "+session);
+//            users.put(msg.getUsername(), session);
+//            session.send(Mono.just(new ArrayList<>(users.keySet()))
+//                    .map(list -> this.listToWebSocketMessage(list, session))
+//            ).subscribe();
+//        }
+//        else if(msg.getType().equals(Message.Type.USER_OUT)) {
+//            users.remove(msg.getUsername());
+//            Message userOutMsg = new Message();
+//            userOutMsg.setUsername(msg.getUsername());
+//            userOutMsg.setContent("bye...");
+//            userOutMsg.setType(Message.Type.USER_OUT);
+//            session.send(Mono.just(session.textMessage(mapperWrite(userOutMsg))))
+//                    .subscribe();
+//        }
+//        else if(msg.getType().equals(Message.Type.MESSAGE)){
+//            session.send(Mono.just(session.textMessage(mapperWrite(msg))))
+//                    .subscribe();
+//        }
     }
 
     private WebSocketMessage listToWebSocketMessage(List<String> list, WebSocketSession session){
@@ -65,6 +86,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
 
     private Message mapperRead(String json){
         Message res = new Message();
+        log.info("json: "+json);
         try{
             res = mapper.readValue(json, Message.class);
         }
@@ -90,6 +112,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
         private final ObjectMapper mapper;
         private final Sinks.Many<String> sink;
 
+
         StreamSubscriber(ObjectMapper mapper, Sinks.Many<String> sink){
             this.mapper = mapper;
             this.sink = sink;
@@ -102,8 +125,10 @@ public class MyWebSocketHandler implements WebSocketHandler {
 
         @Override
         public void onNext(Message msg) {
+            System.out.println("onNext with content: "+msg.getContent());
             try {
                 sink.tryEmitNext(mapper.writeValueAsString(msg));
+
             }
             catch(Exception e){
                 e.printStackTrace();

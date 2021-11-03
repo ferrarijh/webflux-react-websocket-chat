@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentMap;
 
 @Component
@@ -23,26 +24,34 @@ public class MyHandler {
 
     private final ObjectMapper mapper;
     private final ConcurrentMap<String, WebSocketSession> users;
-    private final Sinks.Many<String> sink;
+//    private final Sinks.Many<String> sink;
 
     public Mono<ServerResponse> login(ServerRequest request){
         return request.bodyToMono(Message.class)
                 .filter(msg -> msg.getType().equals(Message.Type.IN_REQ))
-                .doOnNext(msg -> sink.tryEmitNext(mapperWrite(msg)))
-                .then(
-                        ServerResponse.ok()
-                                .bodyValue(new Message("", "", LocalDateTime.now(), Message.Type.IN_OK, null))
-                );
+//                .doOnNext(msg -> sink.tryEmitNext(mapperWrite(msg)))
+                .flatMap(msg ->
+                {
+                    log.info("converting msg...");
+                    return ServerResponse.ok()
+                            .bodyValue(
+                                    new Message(
+                                            msg.getUsername(),
+                                            "IN ok...",
+                                            LocalDateTime.now(),
+                                            Message.Type.IN_OK,
+                                            new ArrayList<>(users.keySet())));
+                });
     }
 
-    private String mapperWrite(Message msg){
-        String res = "";
-        try{
-            res = mapper.writeValueAsString(msg);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return res;
-    }
+//    private String mapperWrite(Message msg){
+//        String res = "";
+//        try{
+//            res = mapper.writeValueAsString(msg);
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//        }
+//        return res;
+//    }
 }
