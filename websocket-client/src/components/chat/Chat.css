@@ -1,0 +1,96 @@
+.Chat {
+  /* text-align: center; */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.Header {
+  margin: 10px;
+  font-weight: bold;
+}
+
+.ChatBody {
+  height: 100%;
+  display: flex;
+}
+
+.Button{
+  border: solid red; 
+}
+
+.ChatLeft {
+  /* float: left; */
+  position: relative;
+  flex: 3;
+  background-color: #9F9;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.ChatLeft > .ChatMessages {
+  background-color: #99F;
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+}
+
+.ChatLeft > .ChatInput {
+  background-color: #550;
+  height: 3em;
+  width: 100%;
+  padding-left: 1em;
+  box-sizing: border-box;
+}
+
+.ChatLeft > .ChatMessages > .Message {
+  background-color: #888;
+  height: 2em;
+}
+
+.UserList {
+  /* float: left; */
+  flex: 1;
+  background-color: #F99;
+  height: 100%;
+  overflow: auto;
+}
+
+/* 
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+ */

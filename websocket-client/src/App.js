@@ -1,34 +1,58 @@
-import {useState, useEffect} from 'react'
-import Chat from './components/Chat'
-import UserList from './components/UserList'
+import {React, useState} from 'react'
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
+import Chat from './components/chat/Chat'
+import Login from './components/login/Login'
 import './App.css'
+
+const RouteLogin = ({component: Component, path, isAuth, ...rest}) => {
+    return (
+        <Route path={path}
+            render={ () => isAuth ?
+                <Redirect to={"/chat"}/> :
+                <Component {...rest} />
+        }/>
+    )
+}
+
+const RouteChatIfAuth = ({component: Component, path, isAuth, ...rest}) => {
+    return (
+        <Route path={path} 
+            render={ () => isAuth ? 
+                <Component {...rest}/> : 
+                <Redirect to={"/login"}/>
+        }/>
+    )
+}
 
 function App() {
 
-  const [users, setUsers] = useState([])
-  const [chatMessages, setChatMessages] = useState([])
-  const [input, setInput] = useState("")
-  const [socket, _] = useState(new WebSocket("ws://localhost:8080/chat"))
-  
-  useEffect(()=>{
-    socket.onopen = e => console.log("Opened connection!")
-    socket.onmessage = onOpen
-    socket.onclose = e => console.log("Closed connection.")
-    socket.onerror = err => console.log("error: ", err.message)
 
-  }, [socket])
+    const [isAuth, setIsAuth] = useState(false)
+    const [username, setUsername] = useState(null)
+    const [users, setUsers] = useState([])
 
-  const onOpen = (e) => {
-    console.log("received: ", e.data)
-    setChatMessages((prevMessages) => [...prevMessages, e.data])
-  }
-
-  return (
-    <div className="App">
-      <Chat setInput={setInput} input={input} chatMessages={chatMessages} socket={socket}/>
-      <UserList users={users}/>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Router>
+                <Switch>
+                    <Redirect exact from="/" to="/login"/>
+                    <RouteLogin path="/login" component={Login} 
+                        username={username} 
+                        isAuth={isAuth}
+                        setUsername={setUsername}
+                        setIsAuth={setIsAuth}
+                        users={users}
+                        setUsers={setUsers}/>
+                    <RouteChatIfAuth path="/chat" component={Chat} 
+                        username={username} 
+                        isAuth={isAuth} 
+                        setIsAuth={setIsAuth}
+                        users={users}
+                        setUsers={setUsers}/>
+                </Switch>
+            </Router>
+        </div>
+    )
 }
 
-export default App;
+export default App

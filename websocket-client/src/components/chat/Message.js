@@ -1,4 +1,9 @@
-import React from 'react'
+export const USER_IN = "USER_IN"
+export const USER_OUT = "USER_OUT"
+export const MESSAGE = "MESSAGE"
+export const USER_LIST = "USER_LIST"
+export const IN_OK = "IN_OK"
+export const IN_REQ = "IN_REQ"
 
 const Message = (props) => {
     return (
