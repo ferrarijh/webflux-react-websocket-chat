@@ -1,60 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Roboto&display=swap');
+
 .Chat {
-  /* text-align: center; */
   height: 100%;
   display: flex;
   flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f8f8;
 }
 
 .Header {
-  margin: 10px;
-  font-weight: bold;
+  font-size: 1em;
+  font-style: italic;
+  color: #aaa;
+  padding: 10px;
+  margin: 0 10px 5px 10px;
+  border-bottom: 1px solid #ececec;
 }
 
 .ChatBody {
-  height: 100%;
+  flex: 1;
   display: flex;
-}
-
-.Button{
-  border: solid red; 
+  flex-direction: row;
 }
 
 .ChatLeft {
   /* float: left; */
-  position: relative;
   flex: 3;
-  background-color: #9F9;
-
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .ChatLeft > .ChatMessages {
-  background-color: #99F;
   flex: 1;
   height: 100%;
   overflow: auto;
 }
 
-.ChatLeft > .ChatInput {
-  background-color: #550;
+.ChatInput > form {
   height: 3em;
-  width: 100%;
-  padding-left: 1em;
+  padding: 5px;
+  /* box-sizing: border-box; */
+  display: flex;
+  flex-direction: row;
+}
+
+.ChatInput > form > .input {
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  height: auto;
+  font-size: 1.2em;
+  flex: 1;
+  margin-right: 5px;
+  resize: none;
+}
+
+.ChatInput > form > .button {
+  border-radius: 5px;
+  font-size: 1em;
+  border: 0 solid;
+}
+
+.messageOthers {
+  margin: 0 10px 5px 30px;
+}
+
+.messageOthers > .username {
+  color: #555;
+  font-style: italic;
+  margin: 0 0 1px 10px;
+  font-size: small;
+}
+
+.messageOthers > .content {
+  background-color: #eaeaea;
+  /* border: 1px solid #ccc; */
+  border-radius: 8px 8px 0 8px;
+  padding: 3px 10px 3px 10px;
+  box-sizing: border-box;
+  margin: 0 0 0 0;
+}
+
+.messageMe {
+  background-color: rgb(195, 255, 225);
+  border-radius: 8px 8px 8px 0;
+  padding: 3px 10px 3px 10px;
+  margin: 10px 30px 10px 10px;
   box-sizing: border-box;
 }
 
-.ChatLeft > .ChatMessages > .Message {
-  background-color: #888;
-  height: 2em;
-}
-
 .UserList {
-  /* float: left; */
   flex: 1;
-  background-color: #F99;
+  background-color: #eaeaea;
+  border-radius: 5px;
   height: 100%;
   overflow: auto;
+}
+
+.User {
+  margin-left: 10px;
+  font-weight: 700;
+}
+
+.User > .me {
+  font-weight: 300;
+  color: #888;
+}
+
+.userIn, .userOut {
+  color: #bbb;
+  text-align: center;
+  font-style: italic;
 }
 
 /* 

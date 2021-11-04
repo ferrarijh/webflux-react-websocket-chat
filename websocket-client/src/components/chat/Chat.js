@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import ChatLeft from './ChatLeft'
 import UserList from './UserList'
-import Header from '../Header'
+import Header from './Header'
 import './Chat.css'
 import * as Type from './Message'
 
@@ -9,7 +9,7 @@ const Chat = (props) => {
 
   const [chatMessages, setChatMessages] = useState([])
   const [socket, setSocket] = useState(null)
-  
+
   useEffect(()=>{
 
     if (socket !== null)
@@ -32,11 +32,14 @@ const Chat = (props) => {
       let msg = JSON.parse(e.data)
       if(msg.type === Type.USER_IN){
         props.setUsers(prevUsers => [...prevUsers, msg.username])
-        setChatMessages(prev => [...prev, msg.username+" joined."])
+        setChatMessages(prev => [...prev, msg])
       }
       else if(msg.type === Type.MESSAGE){
-        let message = msg.username + ":" + msg.content
-        setChatMessages(prevMessages => [...prevMessages, message])
+        setChatMessages(prev => [...prev, msg])
+      }
+      else if(msg.type === Type.USER_OUT){
+        props.setUsers(prevUsers => prevUsers.filter(u => u !== msg.username))
+        setChatMessages(prev => [...prev, msg])
       }
     }
 
@@ -54,7 +57,7 @@ const Chat = (props) => {
         <Header/>
         <div className="ChatBody">
           <ChatLeft username={props.username} chatMessages={chatMessages} socket={socket}/>
-          <UserList users={props.users}/>
+          <UserList username={props.username} users={props.users}/>
         </div>
       </div>
   );

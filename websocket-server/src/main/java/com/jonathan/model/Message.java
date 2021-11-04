@@ -30,7 +30,6 @@ public class Message {
         public static final String USER_IN = "USER_IN";
         public static final String MESSAGE = "MESSAGE";
         public static final String USER_OUT = "USER_OUT";
-        public static final String USER_LIST = "USER_LIST";
         public static final String IN_OK = "IN_OK";
         public static final String IN_REQ = "IN_REQ";
     }

@@ -26,7 +26,6 @@ const RouteChatIfAuth = ({component: Component, path, isAuth, ...rest}) => {
 
 function App() {
 
-
     const [isAuth, setIsAuth] = useState(false)
     const [username, setUsername] = useState(null)
     const [users, setUsers] = useState([])
