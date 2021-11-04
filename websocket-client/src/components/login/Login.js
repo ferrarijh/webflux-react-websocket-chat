@@ -37,11 +37,13 @@ const Login = (props) => {
 
     return (
         <div className="Login">
-            <form onSubmit={handleSubmit}>
-                <span>username:</span><br/>
-                <input type="text" name='username'/>
-                <button type="submit">Join Chat</button>
-            </form>
+            <p className="welcome">Welcome!</p>
+            <div className="loginContainer">
+                <form onSubmit={handleSubmit}>
+                    <input type="text" className="inputText" name='username' placeholder=" username"/><br/>
+                    <button type="submit" className="inputButton">Join Chat</button>
+                </form>
+            </div>
         </div>
     )
 }

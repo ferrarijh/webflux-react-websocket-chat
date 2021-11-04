@@ -28,7 +28,7 @@ public class WebSocketConfig {
     }
 
     @Bean
-    public ConcurrentMap<String, WebSocketSession> users(){
+    public ConcurrentMap<String, String> users(){
         return new ConcurrentHashMap<>();
     }
 

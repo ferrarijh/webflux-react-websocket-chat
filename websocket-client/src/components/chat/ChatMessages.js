@@ -6,7 +6,7 @@ const ChatMessages = (props) => {
         <div className="ChatMessages">
             {props.chatMessages.map((msg, index) => 
                 // <Message key={msg.time} id={msg.id} content={msg.content}/>
-                <Message message={msg} key={index}/>
+                <Message username={props.username} message={msg} key={index}/>
             )}
         </div>
     )

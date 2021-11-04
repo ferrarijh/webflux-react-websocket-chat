@@ -1,4 +1,50 @@
 .Login {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f8;
 }
+
+.loginContainer {
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    position: relative;
+    bottom: 20%;
+}
+
+.welcome {
+    margin-left: 10px;
+    font-size: 2em;
+    position: relative;
+    bottom: 20%;
+}
+
+.inputText { 
+    border-radius: 3px;
+    height: 2em;
+    width: 400px;
+    margin: 2px;
+    border: 1px solid #eee;
+    background-color: transparent;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: large;
+}
+
+.inputButton { 
+    border-radius: 3px;
+    height: 2em;
+    width: 400px;
+    margin: 2px;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: large;
+}
+
+.inputButton:hover {background-color: #ddd;}
+.inputButton:active {background-color: #bbb;}

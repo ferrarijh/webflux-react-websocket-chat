@@ -20,38 +20,25 @@ import java.util.concurrent.ConcurrentMap;
 @RequiredArgsConstructor
 public class MyHandler {
 
-    private Logger log = LoggerFactory.getLogger(MyHandler.class);
+    private final Logger log = LoggerFactory.getLogger(MyHandler.class);
 
-    private final ObjectMapper mapper;
-    private final ConcurrentMap<String, WebSocketSession> users;
-//    private final Sinks.Many<String> sink;
+    private final ConcurrentMap<String, String> users;
 
     public Mono<ServerResponse> login(ServerRequest request){
         return request.bodyToMono(Message.class)
                 .filter(msg -> msg.getType().equals(Message.Type.IN_REQ))
-//                .doOnNext(msg -> sink.tryEmitNext(mapperWrite(msg)))
                 .flatMap(msg ->
                 {
-                    log.info("converting msg...");
                     return ServerResponse.ok()
                             .bodyValue(
                                     new Message(
                                             msg.getUsername(),
-                                            "IN ok...",
+                                            "",
                                             LocalDateTime.now(),
                                             Message.Type.IN_OK,
-                                            new ArrayList<>(users.keySet())));
+                                            new ArrayList<>(users.values())
+                                    )
+                            );
                 });
     }
-
-//    private String mapperWrite(Message msg){
-//        String res = "";
-//        try{
-//            res = mapper.writeValueAsString(msg);
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        return res;
-//    }
 }
