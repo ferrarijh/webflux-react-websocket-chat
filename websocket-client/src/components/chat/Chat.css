@@ -88,7 +88,7 @@ form > .button:active {background-color: #bbb;}
 
 .messageOthers > .date {
   color: #bbb;
-  margin: 0 0 1px 10px;
+  margin: -2px 0 0 0;
   font-size: small;
   text-align: right;
 }
@@ -106,7 +106,7 @@ form > .button:active {background-color: #bbb;}
 }
 .messageMe > .date {
   color: #bbb;
-  margin: 0 0 1px 10px;
+  margin: -2px 0 0 10px;
   font-size: small;
   text-align: right;
 }

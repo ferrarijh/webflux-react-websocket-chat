@@ -17,9 +17,9 @@ import java.util.concurrent.ConcurrentMap;
 
 @RequiredArgsConstructor
 @Component
-public class MyWebSocketHandler implements WebSocketHandler {
+public class ChatWebSocketHandler implements WebSocketHandler {
 
-    private final Logger log = LoggerFactory.getLogger(MyWebSocketHandler.class);
+    private final Logger log = LoggerFactory.getLogger(ChatWebSocketHandler.class);
 
     private final ObjectMapper mapper;
     private final Sinks.Many<String> sink;
@@ -82,44 +82,4 @@ public class MyWebSocketHandler implements WebSocketHandler {
         }
         return res;
     }
-
-//    private static class StreamSubscriber implements Subscriber<Message> {
-//
-//        private final ObjectMapper mapper;
-//        private final Sinks.Many<String> sink;
-//
-//
-//        StreamSubscriber(ObjectMapper mapper, Sinks.Many<String> sink){
-//            this.mapper = mapper;
-//            this.sink = sink;
-//        }
-//
-//        @Override
-//        public void onSubscribe(Subscription s) {
-//            System.out.println("new subscription!");
-//        }
-//
-//        @Override
-//        public void onNext(Message msg) {
-//            System.out.println("onNext with content: "+msg.getContent());
-//            try {
-//                sink.tryEmitNext(mapper.writeValueAsString(msg));
-//
-//            }
-//            catch(Exception e){
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        @Override
-//        public void onError(Throwable t) {
-//            t.printStackTrace();
-//        }
-//
-//        @Override
-//        public void onComplete() {
-//            System.out.println("onComplete.");
-//
-//        }
-//    }
 }

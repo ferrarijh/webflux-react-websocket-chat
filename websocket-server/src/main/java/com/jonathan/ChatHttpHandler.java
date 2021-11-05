@@ -1,6 +1,5 @@
 package com.jonathan;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonathan.model.Message;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -8,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,9 +15,9 @@ import java.util.concurrent.ConcurrentMap;
 
 @Component
 @RequiredArgsConstructor
-public class MyHandler {
+public class ChatHttpHandler {
 
-    private final Logger log = LoggerFactory.getLogger(MyHandler.class);
+    private final Logger log = LoggerFactory.getLogger(ChatHttpHandler.class);
 
     private final ConcurrentMap<String, String> users;
 

@@ -30,6 +30,7 @@ const Chat = (props) => {
 
     ws.onmessage = e => {
       let msg = JSON.parse(e.data)
+      msg.date = new Date(msg.date).toLocaleString()
       if(msg.type === Type.USER_IN){
         props.setUsers(prevUsers => [...prevUsers, msg.username])
         setChatMessages(prev => [...prev, msg])
