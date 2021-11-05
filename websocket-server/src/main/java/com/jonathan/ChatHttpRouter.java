@@ -10,18 +10,10 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
 @Configuration
-public class MyRouter {
-//    @Bean
-//    RouterFunction<ServerResponse> route(MyHandler handler){
-//        return RouterFunctions.route()
-//                .path("/api/v1", builder -> builder
-//                        .GET
-//                )
-//                .build();
-//    }
+public class ChatHttpRouter {
 
     @Bean
-    RouterFunction<ServerResponse> route(MyHandler handler){
+    RouterFunction<ServerResponse> route(ChatHttpHandler handler){
         return RouterFunctions.route()
                 .POST("/login", accept(MediaType.APPLICATION_JSON), handler::login)
                 .build();

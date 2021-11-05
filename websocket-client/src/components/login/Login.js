@@ -53,7 +53,7 @@ const Login = (props) => {
                 {/* <Spinner/> */}
                 <div className="status">
                     {props.netstat === LOADING && <Spinner/>}
-                    {props.netstat === ERROR && <p>something went wrong :(</p>}
+                    {props.netstat === ERROR && <span>something went wrong :(</span>}
                 </div>
                 <form className="loginForm" onSubmit={handleSubmit}>
                     <input type="text" className="inputText" name='username' placeholder=" username"/><br/>
