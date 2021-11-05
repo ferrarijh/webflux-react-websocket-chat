@@ -1,3 +1,5 @@
+import {LOADING, SUCCESS, ERROR} from '../../App'
+import Spinner from '../spinner/Spinner'
 import * as Message from '../chat/Message'
 import './Login.css'
 
@@ -6,6 +8,11 @@ const Login = (props) => {
     const handleSubmit = e => {
         e.preventDefault()
         let usernameSubmit = e.currentTarget.username.value
+        if(usernameSubmit === "")
+            return
+
+        props.setNetstat(LOADING)
+
         let now = new Date().toISOString()
 
         fetch("http://localhost:8080/login", {
@@ -15,7 +22,7 @@ const Login = (props) => {
             },
             body: JSON.stringify({
                 username: usernameSubmit,
-                content: "incoming with normal http...",
+                content: "",
                 date: now,
                 type: Message.IN_REQ
             })
@@ -26,10 +33,14 @@ const Login = (props) => {
                 onInOk(data)
             else
                 console.log('Login rejected... Response type is '+data.type)
-        }).catch(error => console.log('Error: ', error))
+        }).catch(error => {
+            props.setNetstat(ERROR)
+            console.log('Error: ', error)
+        })
     }
 
     const onInOk = async (data) => {
+        props.setNetstat(SUCCESS)
         props.setUsername(data.username)
         props.setUsers(data.userList)
         props.setIsAuth(true)
@@ -37,13 +48,19 @@ const Login = (props) => {
 
     return (
         <div className="Login">
-            <p className="welcome">Welcome!</p>
             <div className="loginContainer">
-                <form onSubmit={handleSubmit}>
+                <p className="welcome">Mood to chat?</p>
+                {/* <Spinner/> */}
+                <div className="status">
+                    {props.netstat === LOADING && <Spinner/>}
+                    {props.netstat === ERROR && <p>something went wrong :(</p>}
+                </div>
+                <form className="loginForm" onSubmit={handleSubmit}>
                     <input type="text" className="inputText" name='username' placeholder=" username"/><br/>
                     <button type="submit" className="inputButton">Join Chat</button>
                 </form>
             </div>
+            <div className="space"/>
         </div>
     )
 }

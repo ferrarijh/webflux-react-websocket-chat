@@ -24,11 +24,16 @@ const RouteChatIfAuth = ({component: Component, path, isAuth, ...rest}) => {
     )
 }
 
+export const LOADING = "LOADING"
+export const SUCCESS = "SUCCESS"
+export const ERROR = "ERROR"
+
 function App() {
 
     const [isAuth, setIsAuth] = useState(false)
     const [username, setUsername] = useState(null)
     const [users, setUsers] = useState([])
+    const [netstat, setNetstat] = useState(SUCCESS)
 
     return (
         <div className="App">
@@ -41,7 +46,9 @@ function App() {
                         setUsername={setUsername}
                         setIsAuth={setIsAuth}
                         users={users}
-                        setUsers={setUsers}/>
+                        setUsers={setUsers}
+                        netstat={netstat}
+                        setNetstat={setNetstat}/>
                     <RouteChatIfAuth path="/chat" component={Chat} 
                         username={username} 
                         isAuth={isAuth} 

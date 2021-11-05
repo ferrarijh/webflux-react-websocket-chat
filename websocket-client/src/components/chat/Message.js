@@ -7,6 +7,11 @@ export const IN_REQ = "IN_REQ"
 
 const Message = (props) => {
 
+    const formatDate = () => {
+        let date = props.message.date
+        return date.slice(0, 10)+", "+date.slice(11, -5)
+    }
+
     switch(props.message.type){
         case USER_IN:
             return (
@@ -18,12 +23,14 @@ const Message = (props) => {
             return (
                 props.message.username !== props.username ?
                     <div className="messageOthers">
-                        <div className="username">{props.message.username}</div>
+                        <p className="username">{props.message.username}</p>
                         <p className="content">{props.message.content}</p>
+                        <p className="date">{formatDate()}</p>
                     </div> :
-                    <p className="messageMe">
-                        {props.message.content}
-                    </p>
+                    <div className="messageMe">
+                        <p className="content">{props.message.content}</p>
+                        <p className="date">{formatDate()}</p>
+                    </div>
             )
         case USER_OUT:
             return (
