@@ -31,8 +31,8 @@ const ChatInput = (props) => {
             date: new Date(),
             type: Type.MESSAGE
         })
-        e.target.value = ""
         e.preventDefault()
+        e.target.value = ""
         setInput("")
         props.socket.send(jsonMessage)
     }
