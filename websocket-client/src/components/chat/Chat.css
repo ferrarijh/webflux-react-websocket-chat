@@ -50,10 +50,11 @@
   border-radius: 5px;
   border: 1px solid #ddd;
   height: auto;
-  font-size: 1.2em;
+  font-size: 1em;
   flex: 1;
   margin-right: 5px;
   resize: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .ChatInput > form > .button {
@@ -97,7 +98,7 @@ form > .button:active {background-color: #bbb;}
 }
 
 .messageMe > .content {
-  background-color: rgb(210, 200, 253);
+  background-color: rgb(200, 210, 253);
   border-radius: 10px 10px 10px 0;
   padding: 3px 10px 3px 10px;
   box-sizing: border-box;
