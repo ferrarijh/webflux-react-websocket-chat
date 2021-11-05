@@ -21,8 +21,11 @@
 }
 
 .status {
+    /* background-color: khaki; */
     text-align: center;
+    color: #f66;
     height: 40px;
+    box-sizing: border-box;
 }
 
 .loginForm { 
