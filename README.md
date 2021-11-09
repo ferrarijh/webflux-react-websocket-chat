@@ -7,7 +7,7 @@ Websocket chat app sample with Spring WebFlux, Reactjs. (feat. docker compose)
 </div>
 
 ## How to run
-1. Install docker
-2. Clone repository
-3. `docker compose up -d`
-4. Go to `http://localhost:3000` on browser and start chatting
+1. Install docker.
+2. Clone repository.
+3. Exploit docker compose with `docker compose up -d` at the proejct root directory.
+4. Go to `http://localhost:3000` on browser and start chatting.
