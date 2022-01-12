@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Roboto&display=swap');
 
 .Chat {
-  height: 100%;
+  height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   font-family: 'Roboto', sans-serif;
@@ -12,35 +13,34 @@
   font-size: 1em;
   font-style: italic;
   color: #aaa;
-  padding: 10px;
-  margin: 0 10px 5px 10px;
+  padding: 1em;
   border-bottom: 1px solid #ececec;
+  box-sizing: border-box;
+  height: 3em;
 }
 
 .ChatBody {
-  flex: 1;
+  height: calc(100vh - 3em);
+  width: 100vw;
   display: flex;
   flex-direction: row;
 }
 
 .ChatLeft {
-  /* float: left; */
-  flex: 3;
+  width: 80vw;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .ChatLeft > .ChatMessages {
-  flex: 1;
   height: 100%;
-  overflow: auto;
+  overflow-y: scroll;
 }
 
 .ChatInput > form {
   height: 3em;
   padding: 5px;
-  /* box-sizing: border-box; */
   display: flex;
   flex-direction: row;
 }
@@ -61,6 +61,7 @@
   border-radius: 5px;
   font-size: 1em;
   border: 1px solid #bbb;
+  box-sizing: border-box;
 }
 
 form > .button:hover {background-color: #ddd;}
@@ -79,7 +80,6 @@ form > .button:active {background-color: #bbb;}
 
 .messageOthers > .content {
   background-color: #eaeaea;
-  /* border: 1px solid #ccc; */
   border-radius: 10px 10px 0 10px;
   padding: 3px 10px 3px 10px;
   box-sizing: border-box;
@@ -106,17 +106,20 @@ form > .button:active {background-color: #bbb;}
 }
 .messageMe > .date {
   color: #bbb;
-  margin: -2px 0 0 10px;
+  margin: 0px;
+  box-sizing: border-box;
   font-size: small;
   text-align: right;
 }
 
 .UserList {
-  flex: 1;
   background-color: #eaeaea;
   border-radius: 5px;
+  box-sizing: border-box;
   height: 100%;
-  overflow: auto;
+  max-height: 100vh;
+  width: 20vw;
+  overflow-y: auto;
 }
 
 .User {
@@ -135,7 +138,19 @@ form > .button:active {background-color: #bbb;}
   font-style: italic;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 /* 
 .App-logo {
