@@ -3,8 +3,7 @@ package com.jonathan;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonathan.model.Message;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
@@ -15,11 +14,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentMap;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class ChatWebSocketHandler implements WebSocketHandler {
-
-    private final Logger log = LoggerFactory.getLogger(ChatWebSocketHandler.class);
 
     private final ObjectMapper mapper;
     private final Sinks.Many<String> sink;
@@ -47,7 +45,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
         );
     }
 
-    String userOutMessage(String sessionId){
+    private String userOutMessage(String sessionId){
         String username = users.get(sessionId);
         users.remove(sessionId);
         return mapperWrite(

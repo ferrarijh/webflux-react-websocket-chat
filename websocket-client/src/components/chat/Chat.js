@@ -21,7 +21,7 @@ const Chat = (props) => {
       setSocket(ws);
       let userInMessage = JSON.stringify({
         username: props.username,
-        content: "I'm in!",
+        content: "",
         date: new Date(),
         type: Type.USER_IN
       })
@@ -51,6 +51,9 @@ const Chat = (props) => {
   
     ws.onerror = err => console.log("error: ", err.message)
     
+    // const cleanup = () => { ws.close() }
+    // window.addEventListener('beforeTabClose', cleanup)
+    // return ()=>{ window.removeEventListener('beforeTabClose', cleanup) }
   })
 
   return (
