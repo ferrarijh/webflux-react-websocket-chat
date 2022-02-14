@@ -1,0 +1,20 @@
+.RoomsContainer {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.UpdateRooms {
+    display: flex;
+}
+
+.RoomOdd {
+    background-color: #eef;
+}
+
+.RoomEven { 
+    background-color: #ccf;
+}
