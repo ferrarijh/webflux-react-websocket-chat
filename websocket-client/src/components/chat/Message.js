@@ -1,9 +1,12 @@
-export const USER_IN = "USER_IN"
-export const USER_OUT = "USER_OUT"
-export const MESSAGE = "MESSAGE"
-export const USER_LIST = "USER_LIST"
-export const IN_OK = "IN_OK"
-export const IN_REQ = "IN_REQ"
+const MessageType = Object.freeze({
+    INIT: "INIT",
+    USER_IN: "USER_IN",
+    USER_OUT: "USER_OUT",
+    MESSAGE: "MESSAGE",
+    USER_LIST: "USER_LIST",
+    IN_OK: "IN_OK",
+    IN_REQ: "IN_REQ"
+});
 
 const Message = (props) => {
 
@@ -12,37 +15,45 @@ const Message = (props) => {
     //     return date.slice(0, 10)+", "+date.slice(11, -5)
     // }
 
-    switch(props.message.type){
-        case USER_IN:
-            return (
-                <div className="userIn">
-                    <p>{props.message.username} joined.</p>
-                </div>
-            )
-        case MESSAGE:
-            return (
-                props.message.username !== props.username ?
-                    <div className="messageOthers">
-                        <p className="username">{props.message.username}</p>
-                        <p className="content">{props.message.content}</p>
-                        <p className="date">{props.message.date}</p>
-                    </div> :
-                    <div className="messageMe">
-                        <p className="content">{props.message.content}</p>
-                        <p className="date">{props.message.date}</p>
+    const renderMessage = (type) => {
+        switch(type){
+            case MessageType.USER_IN:
+                return <div className="UserIn">{props.message.username} joined.</div>;
+            case MessageType.MESSAGE:
+                if (props.message.username === props.username)
+                    return (
+                        <div className="MyMessage">
+                            <p className="content">{props.message.content}</p>
+                            <p className="date">{props.message.date}</p>
+                        </div>
+                    );
+                else
+                    return (
+                        <div className="OthersMessage">
+                            <p className="username">{props.message.username}</p>
+                            <p className="content">{props.message.content}</p>
+                            <p className="date">{props.message.date}</p>
+                        </div>
+                    );
+            case MessageType.USER_OUT:
+                return (
+                    <div className="UserOut">
+                        <p>{props.message.username} left chat.</p>
                     </div>
-            )
-        case USER_OUT:
-            return (
-                <div className="userOut">
-                    <p>{props.message.username} left chat.</p>
-                </div>
-            )
-        default:
-            return(
-                <div>default case. you shouldn't see this!</div>
-            )
-    }
+                );
+            default:
+                return <div>Default case. You shouldn't see this!</div>;
+        }
+    };
+
+    return (
+        <div className="Message">
+            {renderMessage(props.message.type)}
+        </div>
+    );
+
+    
 }
 
-export default Message
+export default Message;
+export {MessageType};

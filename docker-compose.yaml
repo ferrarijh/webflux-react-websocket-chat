@@ -1,12 +1,12 @@
 version: '3.9'
 
 services:
-  websocket-server:
+  chat-server:
     hostname: serverhost
     build: ./websocket-server
     ports:
       - 8080:8080
-  websocket-client:
+  chat-client:
     hostname: clienthost
     build: ./websocket-client
     ports:

@@ -1,64 +1,28 @@
-import {React, useState} from 'react'
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
-import Chat from './components/chat/Chat'
-import Login from './components/login/Login'
-import './App.css'
-
-const RouteLogin = ({component: Component, path, isAuth, ...rest}) => {
-    return (
-        <Route path={path}
-            render={ () => isAuth ?
-                <Redirect to={"/chat"}/> :
-                <Component {...rest} />
-        }/>
-    )
-}
-
-const RouteChatIfAuth = ({component: Component, path, isAuth, ...rest}) => {
-    return (
-        <Route path={path} 
-            render={ () => isAuth ? 
-                <Component {...rest}/> : 
-                <Redirect to={"/login"}/>
-        }/>
-    )
-}
-
-export const LOADING = "LOADING"
-export const SUCCESS = "SUCCESS"
-export const ERROR = "ERROR"
+import {React} from 'react';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import Chat from './components/chat/Chat';
+import Login from './components/login/Login';
+import './App.css';
+import AuthProvider from './components/contexts/AuthProvider';
 
 function App() {
 
-    const [isAuth, setIsAuth] = useState(false)
-    const [username, setUsername] = useState(null)
-    const [users, setUsers] = useState([])
-    const [netstat, setNetstat] = useState(SUCCESS)
-
     return (
         <div className="App">
+            <AuthProvider>
             <Router>
-                <Switch>
-                    <Redirect exact from="/" to="/login"/>
-                    <RouteLogin path="/login" component={Login} 
-                        username={username} 
-                        isAuth={isAuth}
-                        setUsername={setUsername}
-                        setIsAuth={setIsAuth}
-                        users={users}
-                        setUsers={setUsers}
-                        netstat={netstat}
-                        setNetstat={setNetstat}/>
-                    <RouteChatIfAuth path="/chat" component={Chat} 
-                        username={username} 
-                        isAuth={isAuth} 
-                        setIsAuth={setIsAuth}
-                        users={users}
-                        setUsers={setUsers}/>
-                </Switch>
+                <Routes>
+                    <Route path="" element={<Navigate to="chat"/>}/>
+                    <Route path="chat">
+                        <Route path="" element={<Navigate to="login"/>}/>
+                        <Route path="login" element={<Login/>}/>
+                        <Route path="chat" element={<Chat/>}/>
+                    </Route>
+                </Routes>
             </Router>
+            </AuthProvider>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;
