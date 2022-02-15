@@ -19,21 +19,21 @@
   height: 3em;
 }
 
-.ChatBody {
+.Body {
   height: calc(100vh - 3em);
   width: 100vw;
   display: flex;
   flex-direction: row;
 }
 
-.ChatLeft {
+.LeftContainer {
   width: 80vw;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.ChatLeft > .ChatMessages {
+.LeftContainer > .MessageList {
   height: 100%;
   overflow-y: scroll;
 }
@@ -45,7 +45,7 @@
   flex-direction: row;
 }
 
-.ChatInput > form > .input {
+.ChatInput > form > textarea {
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #ddd;
@@ -57,28 +57,28 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.ChatInput > form > .button {
+.ChatInput > form > button {
   border-radius: 5px;
   font-size: 1em;
   border: 1px solid #bbb;
   box-sizing: border-box;
 }
 
-form > .button:hover {background-color: #ddd;}
-form > .button:active {background-color: #bbb;}
+.ChatInput > form > button:hover {background-color: #ddd;}
+.ChatInput > form > button:active {background-color: #bbb;}
 
-.messageOthers {
+.OthersMessage {
   margin: 0 10px 5px 30px;
 }
 
-.messageOthers > .username {
+.OthersMessage > .username {
   color: #555;
   font-style: italic;
   margin: 0 0 1px 10px;
   font-size: small;
 }
 
-.messageOthers > .content {
+.OthersMessage > .content {
   background-color: #eaeaea;
   border-radius: 10px 10px 0 10px;
   padding: 3px 10px 3px 10px;
@@ -86,25 +86,25 @@ form > .button:active {background-color: #bbb;}
   margin: 0;
 }
 
-.messageOthers > .date {
+.OthersMessage > .date {
   color: #bbb;
   margin: -2px 0 0 0;
   font-size: small;
   text-align: right;
 }
 
-.messageMe {
+.MyMessage {
   margin: 7px 30px 7px 10px;
 }
 
-.messageMe > .content {
+.MyMessage > .content {
   background-color: rgb(200, 210, 253);
   border-radius: 10px 10px 10px 0;
   padding: 3px 10px 3px 10px;
   box-sizing: border-box;
   margin: 0;
 }
-.messageMe > .date {
+.MyMessage > .date {
   color: #bbb;
   margin: 0px;
   box-sizing: border-box;
@@ -123,16 +123,16 @@ form > .button:active {background-color: #bbb;}
 }
 
 .User {
-  margin-left: 10px;
+  margin: 10px;
   font-weight: 700;
 }
 
-.User > .me {
+.User > .Me {
   font-weight: 300;
   color: #888;
 }
 
-.userIn, .userOut {
+.UserIn, .UserOut {
   color: #bbb;
   text-align: center;
   font-style: italic;
@@ -151,41 +151,3 @@ form > .button:active {background-color: #bbb;}
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
-/* 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
- */

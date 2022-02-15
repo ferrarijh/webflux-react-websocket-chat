@@ -1,28 +1,14 @@
-package com.jonathan.config;
+package com.jonathan.chat.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.HandlerMapping;
-import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
-import org.springframework.web.reactive.socket.WebSocketHandler;
 import reactor.core.publisher.Sinks;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Configuration
 public class WebSocketConfig {
-
-    @Bean
-    public HandlerMapping handlerMapping(WebSocketHandler handler){
-
-        Map<String, WebSocketHandler> mapping = new HashMap<>();
-        mapping.put("/chat", handler);
-
-        return new SimpleUrlHandlerMapping(mapping, -1);
-    }
 
     @Bean
     public ConcurrentMap<String, String> users(){

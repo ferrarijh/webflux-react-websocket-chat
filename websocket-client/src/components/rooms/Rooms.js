@@ -70,7 +70,7 @@ const Rooms = () => {
                 <thead>
                     <tr>
                         <th>Room Name</th>
-                        <th>Size</th>
+                        <th># of chatters</th>
                     </tr>
                 </thead>
                 <tbody>

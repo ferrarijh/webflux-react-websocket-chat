@@ -1,4 +1,4 @@
-package com.jonathan.config;
+package com.jonathan.chat.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;

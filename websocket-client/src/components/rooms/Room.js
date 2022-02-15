@@ -6,7 +6,7 @@ const Room = (props) => {
             <td><div className="Name">Name: {props.name}</div></td>
             <td><div className="Size">Size: {props.size}</div></td>
         </tr>
-    )
+    );
 };
 
-export default Room
+export default Room;
