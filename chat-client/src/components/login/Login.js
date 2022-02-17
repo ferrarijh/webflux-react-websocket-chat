@@ -34,7 +34,6 @@ const Login = () => {
             },
             body: JSON.stringify({
                 username: newUsername,
-                content: "",
                 date: now,
                 type: Type.IN_REQ
             })

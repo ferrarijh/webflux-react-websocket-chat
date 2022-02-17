@@ -1,7 +1,7 @@
-package com.jonathan.chat;
+package com.jonathan.chat.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jonathan.chat.model.ChatMessage;
+import com.jonathan.chat.dto.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentMap;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Slf4j
 public class ChatWebSocketHandler implements WebSocketHandler {
@@ -28,7 +28,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
     public Mono<Void> handle(WebSocketSession session) {
         this.session = session;
 
-        //subscriber receives incoming messages from session
         log.info("users.size()={}, sessionId: {}", users.size(), session.getId());
 
         ChatMessage init = ChatMessage.builder()
