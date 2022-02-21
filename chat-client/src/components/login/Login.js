@@ -41,12 +41,15 @@ const Login = () => {
                 date: now,
                 type: Type.IN_REQ
             })
-        }).then(response => response.json())
+        }).then(resp => resp.json())
         .catch(error => {
             setStatus(LoadingStatus.ERROR);
             alert("Error: "+error);
             console.log("Error: ", error);
         });
+
+        if(!data)
+            return;
 
         if(data.type === Type.IN_OK)
             onInOk(data);
