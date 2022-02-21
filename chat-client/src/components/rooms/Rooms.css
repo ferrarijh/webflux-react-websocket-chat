@@ -1,0 +1,80 @@
+.Rooms {
+    height: 100%;
+    width: 100%;
+
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.UpdateRoomList {
+    width: 90%;
+    display: flex;
+}
+
+.UpdateRoomList > .UpdateRoomListButton {
+    width: 100%;
+    font-size: 2em;
+    border-radius: 3px;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+}
+
+.UpdateRoomList > .UpdateRoomListButton:hover {
+    background-color: #ddd;
+}
+
+.UpdateRoomList > .UpdateRoomListButton:active {
+    background-color: #bbb;
+}
+
+.CreateRoomForm {
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 90%;
+    font-size: 1.3em;
+}
+
+.CreateRoomForm > .Text {
+    width: 10em;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+}
+
+.CreateRoomForm > .Button {
+    width: 10em;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+}
+
+.Table {
+    width: 90%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.RoomThumbnail:nth-child(odd){
+    background-color: #ccf;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px 20px 8px 20px;
+}
+
+.Guide {
+    margin-top: 10px;
+}
+
+.NoRoomGuide {
+    color: #aaa;
+}
+
+.ErrorGuide {
+    color: red;
+    font-size: 1.3em;
+    font-style: italic;
+}
