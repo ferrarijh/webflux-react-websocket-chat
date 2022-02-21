@@ -38,6 +38,9 @@ const Rooms = () => {
             console.log(err);
         });
 
+        if(!newRoomList)
+            return;
+
         setStatus(Status.IDLE);
         setRoomList(newRoomList);
     }
@@ -63,6 +66,9 @@ const Rooms = () => {
             alert("Server not responding.. Error: "+err);
             setStatus(Status.ERROR);
         });
+
+        if(!response)
+            return;
 
         if(!response.ok){
             alert("Create request rejected. Status="+response.status);
