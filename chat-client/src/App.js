@@ -14,9 +14,9 @@ function App() {
             <AuthProvider>
                 <Router>
                     <Routes>
-                        <Route path="" element={<Navigate to="chat" replace />} />
+                        <Route path="" element={<Navigate to="/chat/login" replace={true} />} />
                         <Route path="chat">
-                            <Route path="" element={<Navigate to="login" replace />} />
+                            {/* <Route path="" element={<Navigate to="login" replace={true} />} /> */}
                             <Route path="login" element={<Login />} />
                             <Route path="rooms" element={
                                 <RequireAuth>

@@ -20,17 +20,18 @@ const Login = () => {
             navigate("../rooms", {replace: true});
     }, [isAuth]);
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let newUsername = e.currentTarget.username.value;
-        if(newUsername === "")
+        if(newUsername === ""){
+            alert("Username can't be nothing!");
             return;
+        }
 
         setStatus(LoadingStatus.LOADING);
 
         let now = new Date().toISOString();
-
-        fetch(baseUrl, {
+        let data = await fetch(baseUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -41,17 +42,16 @@ const Login = () => {
                 type: Type.IN_REQ
             })
         }).then(response => response.json())
-        .then(data => {
-            console.log("data: ", data);
-            if(data.type === Type.IN_OK)
-                onInOk(data);
-            else
-                console.log("Login rejected... Response type is "+data.type);
-        }).catch(error => {
+        .catch(error => {
             setStatus(LoadingStatus.ERROR);
             alert("Error: "+error);
             console.log("Error: ", error);
         });
+
+        if(data.type === Type.IN_OK)
+            onInOk(data);
+        else
+            alert("Login rejected... response: "+JSON.stringify(data));
     };
 
     const onInOk = (data) => {

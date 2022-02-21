@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import './Chat.css';
 import ChatInput from './ChatInput';
 import Message, { MessageType as Type } from './Message';
@@ -10,6 +10,7 @@ const chatBaseUrl = "ws://" + Resources.HOSTNAME + ":" + Resources.PORT + "/chat
 
 const Chat = (props) => {
 
+  const lastMessageRef = useRef(null);
   const { roomId } = useParams();
   const navigate = useNavigate();
   const { username, isAuth, setIsAuth } = useContext(AuthContext);
@@ -25,8 +26,6 @@ const Chat = (props) => {
   useEffect(() => {
     if (socket !== null)
       return;
-
-    // setUserList(prevUsers => [username, ...prevUsers]);
 
     var newSocket = new WebSocket(chatBaseUrl + "/" + roomId);
 
@@ -87,15 +86,27 @@ const Chat = (props) => {
     return cleanup;
   }, []);
 
+  useEffect(() => {
+    lastMessageRef.current.scrollIntoView({behavior: "smooth"});
+  }, [messageList])
+
+  // const test = () => {
+  //   navigate(-1);
+  // }
+
   return (
     <div className="Chat">
-      <div className="Header">Spread Love</div>
+      <div className="Header">
+        Spread Love 
+        {/* <button onClick={test}>TEST</button> */}
+      </div>
       <div className="Body">
         <div className="LeftContainer">
           <div className="MessageList">
             {messageList.map((msg, index) =>
               <Message username={username} message={msg} key={index} />
             )}
+            <div ref={lastMessageRef}/>
           </div>
           <ChatInput username={username} socket={socket} />
         </div>

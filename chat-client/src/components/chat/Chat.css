@@ -10,17 +10,17 @@
 }
 
 .Header {
-  font-size: 1em;
+  font-size: 1rem;
   font-style: italic;
   color: #aaa;
-  padding: 1em;
+  padding: 1rem;
   border-bottom: 1px solid #ececec;
   box-sizing: border-box;
-  height: 3em;
+  height: 3rem;
 }
 
 .Body {
-  height: calc(100vh - 3em);
+  height: calc(100vh - 3rem);
   width: 100vw;
   display: flex;
   flex-direction: row;
@@ -39,7 +39,7 @@
 }
 
 .ChatInput > form {
-  height: 3em;
+  height: 3rem;
   padding: 5px;
   display: flex;
   flex-direction: row;
@@ -50,7 +50,7 @@
   border-radius: 5px;
   border: 1px solid #ddd;
   height: auto;
-  font-size: 1em;
+  font-size: 1rem;
   flex: 1;
   margin-right: 5px;
   resize: none;

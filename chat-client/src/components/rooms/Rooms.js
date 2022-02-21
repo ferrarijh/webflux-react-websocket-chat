@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LoadingStatus as Status } from '../contexts/NetworkProvider';
 import Resources from '../../Resources';
 import Spinner from '../spinner/Spinner';
 import './Rooms.css';
 import RoomThumbnail from './RoomThumbnail';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthProvider';
 
 const baseUrl = "http://"+Resources.HOSTNAME +":"+Resources.PORT+"/chat";
 const roomBaseUrl = baseUrl + "/room";
@@ -16,57 +17,60 @@ const Rooms = () => {
     const navigate = useNavigate();
     const [roomList, setRoomList] = useState([]);
     const [status, setStatus] = useState(Status.IDLE);
+    const {isAuth} = useContext(AuthContext);
 
     useEffect(() => {
+        console.log("Rooms().. isAuth="+isAuth);
         updateRoomList();
     }, []);
 
-    const updateRoomList = () => {
+    const updateRoomList = async () => {
         setStatus(Status.LOADING);
 
-        fetch(roomsBaseUrl, {
+        let newRoomList = await fetch(roomsBaseUrl, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
         }).then(resp => resp.json())
-        .then(data => {
-            setStatus(Status.IDLE);
-            setRoomList(data);
-            console.log(data);
-        }).catch(err => {
+        .catch(err => {
             setStatus(Status.ERROR);
             console.log(err);
         });
-    };
+
+        setStatus(Status.IDLE);
+        setRoomList(newRoomList);
+    }
 
     const handleSubmit = e => {
         e.preventDefault();
         let title = e.currentTarget.titleInput.value;
-        console.log("title="+title);
+        if(title === ""){
+            alert("Title should not be empty!");
+            return;
+        }
         createRoom(title);
     };
 
-    const createRoom = (title) => {
-        fetch(roomBaseUrl, {
+    const createRoom = async (title) => {
+        let response = await fetch(roomBaseUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({title: title})
-        }).then(resp => {
-            if(!resp.ok)
-                throw resp.status;
-            return resp.json()
-        }).then(data => {
-            navigate("../room/chat/"+data.id);
-        }).catch(thrown => {
-            if(typeof thrown === "number")
-                alert("Failed to create room. Status="+thrown);
-            else
-                alert("Error: "+thrown);
+        }).catch(err => {
+            alert("Server not responding.. Error: "+err);
             setStatus(Status.ERROR);
         });
+
+        if(!response.ok){
+            alert("Create request rejected. Status="+response.status);
+            return;
+        }
+
+        let newRoom = await response.json();
+        navigate("../room/chat/"+newRoom.id);
     };
 
     const renderGuide = () => {
