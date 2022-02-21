@@ -5,6 +5,9 @@ import { AuthContext } from '../contexts/AuthProvider';
 import { MessageType as Type } from '../chat/Message';
 import Spinner from '../spinner/Spinner';
 import './Login.css';
+import Resources from '../../Resources';
+
+const baseUrl = "http://"+Resources.HOSTNAME+":"+Resources.PORT+"/chat/login";
 
 const Login = () => {
 
@@ -14,7 +17,7 @@ const Login = () => {
 
     useEffect(() => {
         if(isAuth)
-            navigate("../chat")
+            navigate("../rooms", {replace: true});
     }, [isAuth]);
 
     const handleSubmit = e => {
@@ -27,7 +30,7 @@ const Login = () => {
 
         let now = new Date().toISOString();
 
-        fetch("http://localhost:8080/login", {
+        fetch(baseUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

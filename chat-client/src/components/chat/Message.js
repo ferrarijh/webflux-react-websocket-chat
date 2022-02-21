@@ -10,11 +10,6 @@ const MessageType = Object.freeze({
 
 const Message = (props) => {
 
-    // const formatDate = () => {
-    //     let date = props.message.date
-    //     return date.slice(0, 10)+", "+date.slice(11, -5)
-    // }
-
     const renderMessage = (type) => {
         switch(type){
             case MessageType.USER_IN:

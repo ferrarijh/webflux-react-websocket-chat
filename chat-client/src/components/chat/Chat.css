@@ -122,12 +122,12 @@
   overflow-y: auto;
 }
 
-.User {
+.UserList > .User {
   margin: 10px;
   font-weight: 700;
 }
 
-.User > .Me {
+.UserList > .User > .Me {
   font-weight: 300;
   color: #888;
 }

@@ -2,17 +2,16 @@ package com.jonathan.chat.room;
 
 import com.jonathan.chat.dto.ChatMessage;
 import com.jonathan.chat.mapper.AppMapper;
-import lombok.Getter;
 import reactor.core.publisher.Sinks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class Room {
     private final String id;
+    private final String title;
     private final Sinks.Many<String> sink = Sinks.many().multicast().onBackpressureBuffer();
 
     //TODO("TO-BE: replace to <String, User>")
@@ -20,8 +19,9 @@ public class Room {
 
     private final AppMapper mapper;
 
-    public Room(String id, AppMapper mapper){
+    public Room(String id, String title, AppMapper mapper){
         this.id = id;
+        this.title = title;
         this.mapper = mapper;
     }
 
@@ -73,5 +73,7 @@ public class Room {
     }
 
     public String getId(){ return this.id; }
+    public String getTitle(){ return this.title; }
+    public int getSize(){ return this.userMap.size(); }
     public Sinks.Many<String> getSink(){ return this.sink; }
 }

@@ -3,23 +3,28 @@ import { LoadingStatus as Status } from '../contexts/NetworkProvider';
 import Resources from '../../Resources';
 import Spinner from '../spinner/Spinner';
 import './Rooms.css';
+import RoomThumbnail from './RoomThumbnail';
+import { useNavigate } from 'react-router-dom';
 
-const roomsUrl = "http://" + Resources.HOSTNAME + "/rooms";
-const roomUrl = "http://" + Resources.HOSTNAME + "/room";
+const baseUrl = "http://"+Resources.HOSTNAME +":"+Resources.PORT+"/chat";
+const roomBaseUrl = baseUrl + "/room";
+const roomsBaseUrl = baseUrl + "/rooms";
+const roomChatBaseUrl = roomBaseUrl + "/chat";
 
 const Rooms = () => {
 
-    const [roomsList, setRoomsList] = useState([]);
-    const [status, setStatus] = setState(Status.IDLE);
+    const navigate = useNavigate();
+    const [roomList, setRoomList] = useState([]);
+    const [status, setStatus] = useState(Status.IDLE);
 
     useEffect(() => {
-        updateRoomsList();
+        updateRoomList();
     }, []);
 
-    const updateRoomsList = () => {
-        setState(Status.LOADING);
+    const updateRoomList = () => {
+        setStatus(Status.LOADING);
 
-        fetch(roomUrl, {
+        fetch(roomsBaseUrl, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -27,7 +32,8 @@ const Rooms = () => {
         }).then(resp => resp.json())
         .then(data => {
             setStatus(Status.IDLE);
-            setRoomsList(data.list);
+            setRoomList(data);
+            console.log(data);
         }).catch(err => {
             setStatus(Status.ERROR);
             console.log(err);
@@ -36,50 +42,58 @@ const Rooms = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        let roomName = e.currentTarget.roomNameInput.value;
-        joinOrCreateRoom(roomName);
+        let title = e.currentTarget.titleInput.value;
+        console.log("title="+title);
+        createRoom(title);
     };
 
-    const joinOrCreateRoom = (roomName) => {
-        fetch(roomUrl, {
-            method: "GET",
+    const createRoom = (title) => {
+        fetch(roomBaseUrl, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            body: JSON.stringify({title: title})
         }).then(resp => {
             if(!resp.ok)
-                alert("Chat room not found. Creating new room...");
-            navigate("../room/"+roomName);
-        }).catch(err => {
+                throw resp.status;
+            return resp.json()
+        }).then(data => {
+            navigate("../room/chat/"+data.id);
+        }).catch(thrown => {
+            if(typeof thrown === "number")
+                alert("Failed to create room. Status="+thrown);
+            else
+                alert("Error: "+thrown);
             setStatus(Status.ERROR);
-            console.log(err);
         });
     };
 
     return (
-        <div className="RoomsContainer">
-            <div className="UpdateRooms">
-                <button className="UpdateRoomsButton" onClick={updateRoomsList}>Update Rooms List</button>
-                {status === Status.LOADING && <Spinner />}
+        <div className="Rooms">
+            <div className="UpdateRoomList">
+                <button className="UpdateRoomListButton" onClick={updateRoomList}>Update Room List</button>
             </div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="roomNameInput" placeholder="Room name" /><br />
-                <button type="submit">Join/Create Chat Room</button>
+            <form className="CreateRoomForm" onSubmit={handleSubmit}>
+                <input type="text" className="Text" name="titleInput" placeholder="Room Title" /><br />
+                <button type="submit" className="Button">Create Chat Room</button>
             </form>
             <table className="Table">
                 <thead>
                     <tr>
-                        <th>Room Name</th>
+                        <th>Room Info.</th>
                         <th># of chatters</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {roomsList.forEach((room, idx) => {
-                        <Room key={idx} name={room.name} size={room.size} />
-                    })}
+                    {roomList.map((room) => 
+                        <RoomThumbnail key={room.id} room={room} baseUrl={roomsBaseUrl} updateRoomList={updateRoomList}/>
+                    )}
                 </tbody>
             </table>
-            {roomsList.length === 0 && <div className="NoRoomGuide">There are no rooms right now.</div>}
+            {(roomList.length === 0 && status === Status.IDLE) &&
+                 <div className="NoRoomGuide">There are no rooms right now.</div>}
+            {status === Status.LOADING && <Spinner />}
         </div>
     );
 };

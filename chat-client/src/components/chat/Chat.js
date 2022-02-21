@@ -3,10 +3,14 @@ import './Chat.css';
 import ChatInput from './ChatInput';
 import Message, { MessageType as Type } from './Message';
 import { AuthContext } from '../contexts/AuthProvider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import Resources from '../../Resources';
+
+const chatBaseUrl = "ws://" + Resources.HOSTNAME + ":" + Resources.PORT + "/chat/room/chat";
 
 const Chat = (props) => {
 
+  const { roomId } = useParams();
   const navigate = useNavigate();
   const { username, isAuth, setIsAuth } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
@@ -15,15 +19,7 @@ const Chat = (props) => {
 
   useEffect(() => {
     if (!isAuth)
-      navigate("../login");
-
-    return () => {
-      if (socket === null)
-        return;
-
-      socket.close();
-      setSocket(null);
-    }
+      navigate("../login", { replace: true });
   }, [isAuth]);
 
   useEffect(() => {
@@ -32,7 +28,7 @@ const Chat = (props) => {
 
     setUsers(prevUsers => [username, ...prevUsers]);
 
-    var newSocket = new WebSocket("ws://localhost:8080/chat");
+    var newSocket = new WebSocket(chatBaseUrl + "/" + roomId);
 
     newSocket.onopen = e => {
       setSocket(newSocket);
@@ -49,7 +45,7 @@ const Chat = (props) => {
       let msg = JSON.parse(e.data);
       msg.date = new Date(msg.date).toLocaleString();
 
-      console.log("onmessage: "+JSON.stringify(msg));
+      console.log("onmessage: " + JSON.stringify(msg));
 
       switch (msg.type) {
         case Type.INIT:
@@ -68,6 +64,8 @@ const Chat = (props) => {
           setUsers(prevUsers => prevUsers.filter(u => u !== msg.username));
           setMessages(prev => [...prev, msg]);
           break;
+        default:
+          console.log("Default case for incoming message. You shouldn't see this!");
       }
     };
 
@@ -78,9 +76,16 @@ const Chat = (props) => {
 
     newSocket.onerror = err => console.log("error: ", err.message);
 
-    // const cleanup = () => { ws.close() }
-    // window.addEventListener('beforeTabClose', cleanup)
-    // return ()=>{ window.removeEventListener('beforeTabClose', cleanup) }
+    let cleanup = () => {
+      console.log("Chat cleanup..");
+      if (newSocket === null)
+        return;
+
+      newSocket.close();
+      setSocket(null);
+    };
+
+    return cleanup;
   }, []);
 
   return (

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
+import static org.springframework.web.reactive.function.server.RequestPredicates.contentType;
 
 @Configuration
 public class ChatRouter {
@@ -23,17 +24,17 @@ public class ChatRouter {
     RouterFunction<ServerResponse> route(ChatHttpHandler handler){
         return RouterFunctions.route()
                 .path("/chat", builder -> builder
+                        .POST("/room", contentType(MediaType.APPLICATION_JSON), handler::createRoom)
                         .POST("/login", accept(MediaType.APPLICATION_JSON), handler::login)
                         .GET("/rooms", accept(MediaType.APPLICATION_JSON), handler::getRooms)
+                        .GET("/rooms/{id}", accept(MediaType.APPLICATION_JSON), handler::getRoomThumbnail)
                 ).build();
     }
 
     @Bean
     public HandlerMapping handlerMapping(WebSocketHandler handler){
-
         Map<String, WebSocketHandler> mapping = new HashMap<>();
-        mapping.put("/chat/room", handler);
-
+        mapping.put("/chat/room/chat/**", handler);
         return new SimpleUrlHandlerMapping(mapping, -1);
     }
 }

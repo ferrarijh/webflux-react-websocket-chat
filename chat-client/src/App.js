@@ -4,6 +4,8 @@ import Chat from './components/chat/Chat';
 import Login from './components/login/Login';
 import './App.css';
 import AuthProvider from './components/contexts/AuthProvider';
+import Rooms from './components/rooms/Rooms';
+import RequireAuth from './components/contexts/RequireAuth';
 
 function App() {
 
@@ -12,11 +14,20 @@ function App() {
             <AuthProvider>
             <Router>
                 <Routes>
-                    <Route path="" element={<Navigate to="chat"/>}/>
+                    <Route path="" element={<Navigate to="chat" replace/>}/>
                     <Route path="chat">
-                        <Route path="" element={<Navigate to="login"/>}/>
+                        <Route path="" element={<Navigate to="login" replace/>}/>
                         <Route path="login" element={<Login/>}/>
-                        <Route path="chat" element={<Chat/>}/>
+                        <Route path="rooms" element={
+                            <RequireAuth>
+                                <Rooms/>
+                            </RequireAuth>
+                        }/>
+                        <Route path="room/chat/:roomId" element={
+                            <RequireAuth>
+                                <Chat/>
+                            </RequireAuth>
+                        }/>
                     </Route>
                 </Routes>
             </Router>
