@@ -1,3 +1,5 @@
+import './Message.css';
+
 const MessageType = Object.freeze({
     INIT: "INIT",
     USER_IN: "USER_IN",
@@ -10,32 +12,28 @@ const MessageType = Object.freeze({
 
 const Message = (props) => {
 
-    const renderMessage = (type) => {
-        switch(type){
+    const renderMessage = () => {
+        switch (props.message.type) {
             case MessageType.USER_IN:
                 return <div className="UserIn">{props.message.username} joined.</div>;
             case MessageType.MESSAGE:
                 if (props.message.username === props.username)
                     return (
                         <div className="MyMessage">
-                            <p className="content">{props.message.content}</p>
-                            <p className="date">{props.message.date}</p>
+                            <p className="Content">{props.message.content}</p>
+                            <p className="Date">{props.message.date}</p>
                         </div>
                     );
                 else
                     return (
                         <div className="OthersMessage">
-                            <p className="username">{props.message.username}</p>
-                            <p className="content">{props.message.content}</p>
-                            <p className="date">{props.message.date}</p>
+                            <p className="Username">{props.message.username}</p>
+                            <p className="Content">{props.message.content}</p>
+                            <p className="Date">{props.message.date}</p>
                         </div>
                     );
             case MessageType.USER_OUT:
-                return (
-                    <div className="UserOut">
-                        <p>{props.message.username} left chat.</p>
-                    </div>
-                );
+                return <div className="UserOut">{props.message.username} left chat.</div>;
             default:
                 return <div>Default case. You shouldn't see this!</div>;
         }
@@ -43,12 +41,10 @@ const Message = (props) => {
 
     return (
         <div className="Message">
-            {renderMessage(props.message.type)}
+            {renderMessage()}
         </div>
     );
-
-    
 }
 
 export default Message;
-export {MessageType};
+export { MessageType };

@@ -38,7 +38,7 @@ const RoomThumbnail = (props) => {
     return (
         <tr className="RoomThumbnail" onClick={handleClick}>
             <td>
-                <div className="ID">ID: {props.room.id}</div>
+                <div className="Id">ID: {props.room.id}</div>
                 <div className="Title">Title: {props.room.title}</div>
             </td>
             <td><div className="Size">Size: {props.room.size}</div></td>

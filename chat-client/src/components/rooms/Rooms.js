@@ -69,6 +69,17 @@ const Rooms = () => {
         });
     };
 
+    const renderGuide = () => {
+        switch(status){
+            case Status.IDLE:
+                return roomList.length === 0 && <div className="NoRoomGuide">There are no rooms right now.</div>;
+            case Status.LOADING:
+                return <div className="SpinnerContainer"><Spinner/></div>;
+            case Status.ERROR:
+                return <div className="ErrorGuide">Failed to connect with the server :(</div>;
+        }
+    }
+
     return (
         <div className="Rooms">
             <div className="UpdateRoomList">
@@ -91,9 +102,7 @@ const Rooms = () => {
                     )}
                 </tbody>
             </table>
-            {(roomList.length === 0 && status === Status.IDLE) &&
-                 <div className="NoRoomGuide">There are no rooms right now.</div>}
-            {status === Status.LOADING && <Spinner />}
+            <div className="Guide">{renderGuide()}</div>
         </div>
     );
 };

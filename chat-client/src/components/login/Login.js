@@ -62,18 +62,18 @@ const Login = () => {
 
     return (
         <div className="Login">
-            <div className="loginContainer">
-                <p className="welcome">Mood to chat?</p>
-                <div className="status">
+            <div className="LoginContainer">
+                <p className="WelcomeGuide">Mood to chat?</p>
+                <div className="Status">
                     {status === LoadingStatus.LOADING && <Spinner/>}
-                    {status === LoadingStatus.ERROR && <span>something went wrong :(</span>}
+                    {status === LoadingStatus.ERROR && <span><i>Can't connect with the server :(</i></span>}
                 </div>
-                <form className="loginForm" onSubmit={handleSubmit}>
-                    <input type="text" className="inputText" name='username' placeholder=" username"/><br/>
-                    <button type="submit" className="inputButton">Join Chat</button>
+                <form className="LoginForm" onSubmit={handleSubmit}>
+                    <input type="text" className="Text" name='username' placeholder=" username"/><br/>
+                    <button type="submit" className="Button">Join Chat</button>
                 </form>
             </div>
-            <div className="space"/>
+            <div className="Space"/>
         </div>
     );
 };

@@ -30,10 +30,6 @@
     background-color: #bbb;
 }
 
-.Spinner {
-    height: 100%;
-}
-
 .CreateRoomForm {
     margin-left: 10px;
     margin-top: 10px;
@@ -67,4 +63,18 @@ td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px 20px 8px 20px;
+}
+
+.Guide {
+    margin-top: 10px;
+}
+
+.NoRoomGuide {
+    color: #aaa;
+}
+
+.ErrorGuide {
+    color: red;
+    font-size: 1.3em;
+    font-style: italic;
 }

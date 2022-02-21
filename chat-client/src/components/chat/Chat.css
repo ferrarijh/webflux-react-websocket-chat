@@ -67,51 +67,6 @@
 .ChatInput > form > button:hover {background-color: #ddd;}
 .ChatInput > form > button:active {background-color: #bbb;}
 
-.OthersMessage {
-  margin: 0 10px 5px 30px;
-}
-
-.OthersMessage > .username {
-  color: #555;
-  font-style: italic;
-  margin: 0 0 1px 10px;
-  font-size: small;
-}
-
-.OthersMessage > .content {
-  background-color: #eaeaea;
-  border-radius: 10px 10px 0 10px;
-  padding: 3px 10px 3px 10px;
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.OthersMessage > .date {
-  color: #bbb;
-  margin: -2px 0 0 0;
-  font-size: small;
-  text-align: right;
-}
-
-.MyMessage {
-  margin: 7px 30px 7px 10px;
-}
-
-.MyMessage > .content {
-  background-color: rgb(200, 210, 253);
-  border-radius: 10px 10px 10px 0;
-  padding: 3px 10px 3px 10px;
-  box-sizing: border-box;
-  margin: 0;
-}
-.MyMessage > .date {
-  color: #bbb;
-  margin: 0px;
-  box-sizing: border-box;
-  font-size: small;
-  text-align: right;
-}
-
 .UserList {
   background-color: #eaeaea;
   border-radius: 5px;

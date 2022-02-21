@@ -13,8 +13,8 @@ const Chat = (props) => {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const { username, isAuth, setIsAuth } = useContext(AuthContext);
-  const [users, setUsers] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [userList, setUserList] = useState([username]);
+  const [messageList, setMessageList] = useState([]);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Chat = (props) => {
     if (socket !== null)
       return;
 
-    setUsers(prevUsers => [username, ...prevUsers]);
+    // setUserList(prevUsers => [username, ...prevUsers]);
 
     var newSocket = new WebSocket(chatBaseUrl + "/" + roomId);
 
@@ -37,7 +37,6 @@ const Chat = (props) => {
         username: username,
         date: new Date()
       });
-      console.log(userInMessage)
       newSocket.send(userInMessage);
     };
 
@@ -49,20 +48,20 @@ const Chat = (props) => {
 
       switch (msg.type) {
         case Type.INIT:
-          setUsers(prev => [...prev, msg.user_list]);
+          setUserList(prev => [...prev, ...msg.user_list]);
           break;
         case Type.USER_IN:
           if (msg.username === username)
             return;
-          setUsers(prevUsers => [...prevUsers, msg.username]);
-          setMessages(prev => [...prev, msg]);
+          setUserList(prev => [...prev, msg.username]);
+          setMessageList(prev => [...prev, msg]);
           break;
         case Type.MESSAGE:
-          setMessages(prev => [...prev, msg]);
+          setMessageList(prev => [...prev, msg]);
           break;
         case Type.USER_OUT:
-          setUsers(prevUsers => prevUsers.filter(u => u !== msg.username));
-          setMessages(prev => [...prev, msg]);
+          setUserList(prev => prev.filter(u => u !== msg.username));
+          setMessageList(prev => [...prev, msg]);
           break;
         default:
           console.log("Default case for incoming message. You shouldn't see this!");
@@ -94,14 +93,14 @@ const Chat = (props) => {
       <div className="Body">
         <div className="LeftContainer">
           <div className="MessageList">
-            {messages.map((msg, index) =>
+            {messageList.map((msg, index) =>
               <Message username={username} message={msg} key={index} />
             )}
           </div>
           <ChatInput username={username} socket={socket} />
         </div>
         <div className="UserList">
-          {users.map((user, index) =>
+          {userList.map((user, index) =>
             <div className="User" key={index}>
               {user}{username === user && <span className="Me"> (me)</span>}
             </div>

@@ -4,8 +4,8 @@
   border-radius: 50%;
   border-top: 5px solid #3498db;
   box-sizing: border-box;
-  width: 20px;
-  height: 20px;
+  width: 2em;
+  height: 2em;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }

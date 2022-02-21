@@ -14,7 +14,7 @@ public class AppConfig implements WebFluxConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry){
-        corsRegistry.addMapping("/chat/*")
+        corsRegistry.addMapping("/chat/**")
 //                .allowCredentials(false)
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST");
