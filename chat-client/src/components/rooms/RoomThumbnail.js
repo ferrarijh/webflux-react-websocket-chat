@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import './RoomThumbnail.css';
 
 const RoomThumbnail = (props) => {
 
@@ -38,10 +39,10 @@ const RoomThumbnail = (props) => {
     return (
         <tr className="RoomThumbnail" onClick={handleClick}>
             <td>
-                <div className="Id">ID: {props.room.id}</div>
-                <div className="Title">Title: {props.room.title}</div>
+                <div className="Title">{props.room.title}</div>
+                <div className="Id">[ID] {props.room.id}</div>
             </td>
-            <td><div className="Size">Size: {props.room.size}</div></td>
+            <td><div className="Size">{props.room.size}</div></td>
         </tr>
     );
 };
