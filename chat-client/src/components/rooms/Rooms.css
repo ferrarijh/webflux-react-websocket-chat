@@ -16,7 +16,7 @@
 
 .UpdateRoomList > .UpdateRoomListButton {
     width: 100%;
-    font-size: 2em;
+    font-size: 2rem;
     border-radius: 3px;
     border: 1px solid #e0e0e0;
     box-sizing: border-box;
@@ -34,11 +34,11 @@
     margin-left: 10px;
     margin-top: 10px;
     width: 90%;
-    font-size: 1.3em;
+    font-size: 1.3rem;
 }
 
 .CreateRoomForm > .Text {
-    width: 10em;
+    width: 30rem;
     box-sizing: border-box;
     border: 1px solid #aaa;
 }
@@ -47,6 +47,7 @@
     width: 10em;
     box-sizing: border-box;
     border: 1px solid #aaa;
+    border-radius: 3px;
 }
 
 .Table {
@@ -56,12 +57,16 @@
 }
 
 .RoomThumbnail:nth-child(odd){
-    background-color: #ccf;
+    background-color: #ddf;
 }
 
 td, th {
+    font-size: 1rem;
     border: 1px solid #dddddd;
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 8px 20px 8px 20px;
 }
 
@@ -75,6 +80,6 @@ td, th {
 
 .ErrorGuide {
     color: red;
-    font-size: 1.3em;
+    font-size: 1.3rem;
     font-style: italic;
 }
