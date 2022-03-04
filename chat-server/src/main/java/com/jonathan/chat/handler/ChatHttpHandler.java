@@ -3,8 +3,9 @@ package com.jonathan.chat.handler;
 import com.jonathan.chat.dto.ChatMessage;
 import com.jonathan.chat.dto.ErrorMessage;
 import com.jonathan.chat.dto.RoomThumbnail;
-import com.jonathan.chat.room.Room;
-import com.jonathan.chat.room.RoomManager;
+import com.jonathan.chat.room.LocalRoom;
+import com.jonathan.chat.room.LocalRoomManager;
+import com.jonathan.chat.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,18 +13,16 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class ChatHttpHandler {
 
-    private final ConcurrentMap<String, String> users;
-    private final RoomManager roomManager;
+    private final LocalRoomManager localRoomManager;
+    private final RedisService redisService;
 
     public Mono<ServerResponse> login(ServerRequest request){
         return request.bodyToMono(ChatMessage.class)
@@ -42,33 +41,38 @@ public class ChatHttpHandler {
     }
 
     public Mono<ServerResponse> createRoom(ServerRequest request){
-        return request.bodyToMono(RoomThumbnail.class)
-                .flatMap(thumbnail -> {
-                    if(thumbnail.getTitle().isEmpty())
-                        return ServerResponse.badRequest().bodyValue(
-                                new ErrorMessage("Title should not be empty")
-                        );
+        return request.bodyToMono(RoomThumbnail.class)  //only title field is present here
+                .flatMap(thumbnailTitleOnly -> {
+                    if(thumbnailTitleOnly.getTitle().isBlank())
+                        return ServerResponse.badRequest().bodyValue(new ErrorMessage("Title should not be empty"));
 
-                    Room room = roomManager.createRoom(thumbnail.getTitle());
-                    RoomThumbnail responseBody = new RoomThumbnail(room.getId(), room.getTitle(), room.getSize());
-                    return ServerResponse.ok().bodyValue(responseBody);
+                    LocalRoom room = localRoomManager.createFirstRoom(thumbnailTitleOnly.getTitle());
+                    RoomThumbnail responseBody = new RoomThumbnail(room.getId(), room.getTitle(), 0);
+                    return redisService.createRoom(responseBody)
+                        .flatMap(created -> {
+                            if(created)
+                                return ServerResponse.created(URI.create("http://localhost:8080/"+responseBody.getId()))
+                                        .bodyValue(responseBody);
+                            else
+                                return ServerResponse.status(500).bodyValue(
+                                        new ErrorMessage("Room already exists - THIS ERROR MUST NOT OCCUR")
+                                );
+                        });
                 });
     }
 
-    public Mono<ServerResponse> getRooms(ServerRequest _req){
-        List<RoomThumbnail> list = roomManager.getAllRooms().stream().map(room ->
-                new RoomThumbnail(room.getId(), room.getTitle(), room.getSize())
-        ).collect(Collectors.toList());
-
-        return ServerResponse.ok().bodyValue(list);
+    public Mono<ServerResponse> getAllRooms(ServerRequest _req){
+        return redisService.getAllRoomThumbnails().collectList()
+                .flatMap(list -> ServerResponse.ok().bodyValue(list));
     }
 
     public Mono<ServerResponse> getRoomThumbnail(ServerRequest request){
         String id = request.pathVariable("id");
-        Room room = roomManager.getRoom(id);
-        if(room == null)
-            return ServerResponse.notFound().build();
-        RoomThumbnail roomThumbnail = new RoomThumbnail(room.getId(), room.getTitle(), room.getSize());
-        return ServerResponse.ok().bodyValue(roomThumbnail);
+        return redisService.getRoomThumbnail(id)
+                .flatMap(thumbnail -> {
+                    if(!localRoomManager.isPresent(id))
+                        localRoomManager.createRoom(thumbnail);
+                    return ServerResponse.ok().bodyValue(thumbnail);
+                }).switchIfEmpty(ServerResponse.notFound().build());
     }
 }
