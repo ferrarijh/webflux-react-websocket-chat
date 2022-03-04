@@ -46,7 +46,7 @@ public class ChatHttpHandler {
                     if(thumbnailTitleOnly.getTitle().isBlank())
                         return ServerResponse.badRequest().bodyValue(new ErrorMessage("Title should not be empty"));
 
-                    LocalRoom room = localRoomManager.createRoom(thumbnailTitleOnly.getTitle());
+                    LocalRoom room = localRoomManager.createFirstRoom(thumbnailTitleOnly.getTitle());
                     RoomThumbnail responseBody = new RoomThumbnail(room.getId(), room.getTitle(), 0);
                     return redisService.createRoom(responseBody)
                         .flatMap(created -> {
@@ -66,11 +66,13 @@ public class ChatHttpHandler {
                 .flatMap(list -> ServerResponse.ok().bodyValue(list));
     }
 
-    //for test
     public Mono<ServerResponse> getRoomThumbnail(ServerRequest request){
         String id = request.pathVariable("id");
         return redisService.getRoomThumbnail(id)
-                .flatMap(thumbnail -> ServerResponse.ok().bodyValue(thumbnail))
-                .switchIfEmpty(ServerResponse.notFound().build());
+                .flatMap(thumbnail -> {
+                    if(!localRoomManager.isPresent(id))
+                        localRoomManager.createRoom(thumbnail);
+                    return ServerResponse.ok().bodyValue(thumbnail);
+                }).switchIfEmpty(ServerResponse.notFound().build());
     }
 }

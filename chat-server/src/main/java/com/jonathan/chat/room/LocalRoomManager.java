@@ -1,5 +1,6 @@
 package com.jonathan.chat.room;
 
+import com.jonathan.chat.dto.RoomThumbnail;
 import com.jonathan.chat.mapper.AppMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +25,24 @@ public class LocalRoomManager {
 
     private final AppMapper mapper;
 
-    public LocalRoom createRoom(String title){
+    public LocalRoom createFirstRoom(String title){
         String roomId = UUID.randomUUID().toString();
-        LocalRoom newLocalRoom = new LocalRoom(roomId, title);
-        this.roomMap.put(roomId, newLocalRoom);
+        LocalRoom firstLocalRoom = new LocalRoom(roomId, title);
+        this.roomMap.put(roomId, firstLocalRoom);
 
-        return newLocalRoom;
+        return firstLocalRoom;
     }
 
+    public LocalRoom createRoom(RoomThumbnail thumbnail){
+        LocalRoom localRoom = new LocalRoom(thumbnail.getId(), thumbnail.getTitle());
+        this.roomMap.put(thumbnail.getId(), localRoom);
+
+        return localRoom;
+    }
+
+
     public boolean isPresent(String roomId){
-        return this.roomMap.get(roomId) == null;
+        return this.roomMap.get(roomId) != null;
     }
 
     public LocalRoom getRoom(String roomId){

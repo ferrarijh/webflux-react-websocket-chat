@@ -27,7 +27,7 @@ public class ChatRouter {
                         .POST("/room", contentType(MediaType.APPLICATION_JSON), handler::createRoom)
                         .POST("/login", accept(MediaType.APPLICATION_JSON), handler::login)
                         .GET("/rooms", accept(MediaType.APPLICATION_JSON), handler::getAllRooms)
-                        //Client requests here before requesting ws connection
+                        //Client requests here before requesting WS connection so LocalRoom instance can be created if it's locally absent.
                         .GET("/rooms/{id}", accept(MediaType.APPLICATION_JSON), handler::getRoomThumbnail)
                 ).build();
     }

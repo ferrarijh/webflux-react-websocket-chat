@@ -117,6 +117,9 @@ public class RedisService {
                 }).map(tuple -> new RoomThumbnail(tuple.getT1(), tuple.getT2(), tuple.getT3().intValue()));
     }
 
+    /**
+     * Returns RoomThumbnail with room id, title and size if the room associated with the id exists in redis. Otherwise an empty Mono.
+     */
     public Mono<RoomThumbnail> getRoomThumbnail(String roomId) {
         return Mono.zip(
                 redisTemplate.opsForValue().get(roomTitleKey(roomId)),
