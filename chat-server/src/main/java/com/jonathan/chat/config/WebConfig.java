@@ -10,7 +10,7 @@ import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 @Configuration
-public class AppConfig implements WebFluxConfigurer {
+public class WebConfig implements WebFluxConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry){

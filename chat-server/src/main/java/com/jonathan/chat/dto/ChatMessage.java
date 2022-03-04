@@ -1,18 +1,20 @@
 package com.jonathan.chat.dto;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+//@NoArgsConstructor
 public class ChatMessage {
     private String username;
     private String content;
@@ -25,6 +27,7 @@ public class ChatMessage {
         USER_IN("USER_IN"),
         MESSAGE("MESSAGE"),
         USER_OUT("USER_OUT"),
+
         IN_OK("IN_OK"),
         IN_REQ("IN_REQ");
 

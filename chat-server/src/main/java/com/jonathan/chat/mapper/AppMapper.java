@@ -1,5 +1,7 @@
 package com.jonathan.chat.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonathan.chat.dto.ChatMessage;
 import lombok.RequiredArgsConstructor;
@@ -11,25 +13,32 @@ public class AppMapper {
 
     private final ObjectMapper mapper;
 
-    public ChatMessage read(String inbound){
-        ChatMessage res = ChatMessage.builder().build();
+    public ChatMessage readChatMessage(String inbound){
         try{
-            res = mapper.readValue(inbound, ChatMessage.class);
+            return mapper.readValue(inbound, ChatMessage.class);
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return res;
+        return ChatMessage.builder().build();
     }
 
-    public String write(ChatMessage outbound){
-        String res = "";
+    public String write(Object outbound){
         try{
-            res = mapper.writeValueAsString(outbound);
+            return mapper.writeValueAsString(outbound);
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return res;
+        return "";
+    }
+
+    public <T> T read(String str, TypeReference<T> type) {
+        try {
+            return mapper.readValue(str, type);
+        }catch(JsonProcessingException jpe){
+            jpe.printStackTrace();
+        }
+        return null;
     }
 }

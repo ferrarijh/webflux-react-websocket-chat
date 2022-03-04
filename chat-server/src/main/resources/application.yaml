@@ -1,3 +1,11 @@
+redis:
+  servers:
+    - host: localhost
+      port: 6379
+
+
 logging:
   level:
+    io:
+      lettuce: trace
     root: debug
