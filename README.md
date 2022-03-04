@@ -1,5 +1,13 @@
 # webflux-react-websocket-chat
-Websocket chat app sample with Spring WebFlux, Reactjs. (feat. docker compose)
+Websocket chat app
+
+## Stack
+Backend:
+- Spring WebFlux
+- Redis - For chat room implementation
+
+Frontend:
+- React
 
 ## Demo
 <div>
