@@ -1,5 +1,5 @@
 # webflux-react-websocket-chat
-Websocket chat app
+Scalable WebSocket chat service with Spring React, Spring WebFlux and Redis.
 
 ## Stack
 Backend:
