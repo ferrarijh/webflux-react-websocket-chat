@@ -1,13 +1,63 @@
 version: '3.9'
 
 services:
-  chat-server:
-    hostname: serverhost
-    build: ./websocket-server
+  chat-server-1:
+    hostname: serverhost-1
+    build: 
+      context: ./chat-server
     ports:
       - 8080:8080
-  chat-client:
-    hostname: clienthost
-    build: ./websocket-client
+    environment:
+      - REDIS_HOST=redishost
+    depends_on:
+      - redis
+    networks: 
+      - chat-net
+
+  chat-server-2:
+    hostname: serverhost-2
+    build:
+      context: ./chat-server
+    ports:
+      - 8081:8080
+    environment:
+      - REDIS_HOST=redishost
+    depends_on: 
+      - redis
+    networks: 
+      - chat-net
+
+  chat-client-1:
+    hostname: clienthost-1
+    build: 
+      context: ./chat-client
     ports:
       - 3000:3000
+    environment: 
+      - REACT_APP_SERVER_HOST=serverhost-1
+      - REACT_APP_SERVER_PORT=8080
+    networks: 
+      - chat-net
+
+  chat-client-2:
+    hostname: clienthost-2
+    build: 
+      context: ./chat-client
+    ports:
+      - 3001:3000
+    environment: 
+      - REACT_APP_SERVER_HOST=serverhost-2
+      - REACT_APP_SERVER_PORT=8081
+    networks: 
+      - chat-net
+
+  redis:
+    hostname: redishost
+    image: redis
+    ports:
+      - 6379:6379
+    networks: 
+      - chat-net
+
+networks:
+  chat-net:
