@@ -1,14 +1,10 @@
 FROM node:16-alpine
-
-MAINTAINER jonathan hahn
+MAINTAINER Jonathan Hahn
 
 RUN mkdir /app
 WORKDIR /app
 
-COPY package.json /app
-RUN npm install
+COPY ./build /app/build
+RUN npm i -g serve
 
-COPY . /app
-RUN npm run build
-
-CMD ["npm", "start", "react"]
+CMD ["serve", "-s", "build"]
