@@ -15,7 +15,11 @@ Frontend:
 </div>
 
 ## How to run
-1. Install docker.
-2. Clone repository.
-3. Exploit docker compose with `docker compose up -d` at the proejct root directory.
-4. Go to `http://localhost:3000` on browser and start chatting.
+Assuming docker is installed and running,
+
+1. Clone repository.
+2. Execute `build.sh` which builds `chat-server` and `chat-client`. Building `chat-server` requires jdk11.
+3. Run command `docker compose up -d` at the project root directory.
+4. Go to `http://localhost:3000` or `http://localhost:3001` to start chatting.
+
+React app running on port 3000 and 3001 send requests respectively to port 8080's and 8081's Spring Application.
