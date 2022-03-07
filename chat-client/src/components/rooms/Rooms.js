@@ -21,6 +21,8 @@ const Rooms = () => {
 
     useEffect(() => {
         console.log("Rooms().. isAuth="+isAuth);
+        console.log("process.env.REACT_APP_SERVER_PORT=%s", process.env.REACT_APP_SERVER_PORT);
+        console.log("Resources=%s", JSON.stringify(Resources));
         updateRoomList();
     }, []);
 
