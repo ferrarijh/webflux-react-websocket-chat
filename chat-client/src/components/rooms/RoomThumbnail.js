@@ -33,7 +33,6 @@ const RoomThumbnail = (props) => {
                 alert("Unknown error: "+thrown);
             props.updateRoomList();
         });
-
     }
 
     return (
