@@ -1,4 +1,4 @@
-package com.jonathan.chat.config;
+package com.jonathan.chat.api;
 
 import com.jonathan.chat.handler.ChatHttpHandler;
 import org.springframework.context.annotation.Bean;
