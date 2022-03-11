@@ -28,3 +28,11 @@ Assuming docker is installed and running,
 4. Go to `http://localhost:3000` or `http://localhost:3001` to start chatting.
 
 React app running on port 3000 and 3001 send requests respectively to port 8080's and 8081's Spring Application.
+
+## Troubleshooting
+
+Occasionally on windows, docker may complain that it failed to bind to specified ports. This is due to windows blocking a range of ports on startup. Such ports can be checked with command:
+
+`netsh interface ipv4 show excludedportrange protocol=tcp`
+
+In such case you may want to rewrite `docker-compose.yml` so contaiers can bind to available ports.
