@@ -1,2 +1,5 @@
 role:
   user: ROLE_USER
+
+security:
+  secret: secret
