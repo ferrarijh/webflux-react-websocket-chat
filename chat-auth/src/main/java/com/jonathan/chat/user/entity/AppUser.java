@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@Data
 @Entity
 @Table(name = "user")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppUser {

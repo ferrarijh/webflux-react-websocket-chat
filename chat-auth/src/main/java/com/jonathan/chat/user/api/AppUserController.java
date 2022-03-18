@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 
 @RestController
 @RequestMapping(path = "/chat/user")
@@ -21,8 +22,11 @@ public class AppUserController {
     private final AppUserService userService;
 
     @PostMapping(path = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<String> join(@RequestBody JoinForm joinForm){
-        return ResponseEntity.ok().body(userService.registerUser(joinForm));
+    ResponseEntity<String> join(
+            HttpServletRequest request,
+            @RequestBody JoinForm joinForm
+    ){
+        return ResponseEntity.created(URI.create(request.getRequestURI())).body(userService.registerUser(joinForm));
     }
 
     @PostMapping(path = "/signin", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -34,7 +38,7 @@ public class AppUserController {
         TokenPair tokens = userService.authenticate(principal);
         response.addCookie(new Cookie("access_token", tokens.getAccessToken()));
         response.addCookie(new Cookie("refresh_token", tokens.getRefreshToken()));
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(URI.create(request.getRequestURI())).build();
     }
 
     /* Only for logging */

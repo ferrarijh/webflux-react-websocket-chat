@@ -26,6 +26,10 @@ app:
     # in days
     refresh-token: 30
 
+server:
+  error:
+    include-message: always
+
 logging:
   level:
     root: debug

@@ -18,4 +18,8 @@ public class AppProperties {
 
     @Value("${app.duration.refresh-token}")
     private Integer refreshTokenDuration;
+
+
+    @Value("${role.user}")
+    private String roleUser;
 }

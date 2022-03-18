@@ -14,8 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -32,10 +31,14 @@ public class AppUserService {
         if(form.getUsername().isBlank() || form.getPassword().isBlank())
             throw new ResponseStatusException(BAD_REQUEST, "Field must not be empty");
 
+        if(userRepository.existsAppUserByUsername(form.getUsername()))
+            throw new ResponseStatusException(CONFLICT, String.format("Username %s already exists.", form.getUsername()));
+
         AppUser user = new AppUser();
         user.setUsername(form.getUsername());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
-        user.getRoles().add(userRoleRepository.findByName("ROLE_USER"));
+        List<AppUserRole> roles = Arrays.asList(userRoleRepository.findByName(props.getRoleUser()));
+        user.setRoles(roles);
         userRepository.save(user);
 
         return "Successfully registered new user.";
@@ -45,14 +48,12 @@ public class AppUserService {
         if(principal.getUsername().isBlank() || principal.getPassword().isBlank())
             throw new ResponseStatusException(BAD_REQUEST, "Field must not be empty");
 
-        if(!userRepository.existsByUsername(principal.getUsername()))
+        Optional<AppUser> user = userRepository.findByUsername(principal.getUsername());
+        if(user.isEmpty())
             throw new ResponseStatusException(NOT_FOUND, "Username does not exist.");
 
-        String hashedPassword = passwordEncoder.encode(principal.getPassword());
-        Optional<AppUser> user = userRepository.findByUsernameAndPassword(principal.getUsername(), hashedPassword);
-
-        if(user.isEmpty())
-            throw new ResponseStatusException(UNAUTHORIZED);
+        if(!passwordEncoder.matches(principal.getPassword(), user.get().getPassword()))
+            throw new ResponseStatusException(UNAUTHORIZED, "Incorrect password.");
 
         long now = System.currentTimeMillis();
         String accessToken = JWT.create()

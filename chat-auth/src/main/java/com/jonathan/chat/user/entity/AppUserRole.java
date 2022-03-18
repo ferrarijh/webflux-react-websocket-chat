@@ -16,4 +16,8 @@ public class AppUserRole {
 
     @Column(name = "name")
     private String name;
+
+    public AppUserRole(String _name){
+        this.name = _name;
+    }
 }
