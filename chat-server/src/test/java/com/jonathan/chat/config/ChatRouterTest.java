@@ -1,8 +1,8 @@
 package com.jonathan.chat.config;
 
+import com.jonathan.chat.api.ChatRouter;
 import com.jonathan.chat.dto.RoomThumbnail;
 import com.jonathan.chat.handler.ChatHttpHandler;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

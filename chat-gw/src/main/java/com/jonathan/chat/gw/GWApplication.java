@@ -1,11 +1,11 @@
-package com.jonathan.chat.auth;
+package com.jonathan.chat.gw;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AuthApplication {
+public class GWApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AuthApplication.class);
+        SpringApplication.run(GWApplication.class);
     }
 }
