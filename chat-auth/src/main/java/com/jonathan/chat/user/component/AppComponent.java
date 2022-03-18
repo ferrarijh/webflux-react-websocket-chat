@@ -1,4 +1,4 @@
-package com.jonathan.chat.auth.component;
+package com.jonathan.chat.user.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
