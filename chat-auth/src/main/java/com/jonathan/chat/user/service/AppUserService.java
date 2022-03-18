@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -59,8 +60,9 @@ public class AppUserService {
         String accessToken = JWT.create()
                 .withSubject(principal.getUsername())
                 .withExpiresAt(new Date(now + props.getAccessTokenDuration() * 60 * 1000))
-                .withClaim("roles", user.get().getRoles())
-                .sign(hmac256);
+                .withClaim("roles",
+                        user.get().getRoles().stream().map(AppUserRole::getName).collect(Collectors.toList())
+                ).sign(hmac256);
 
         String refreshToken = JWT.create()
                 .withSubject(principal.getUsername())
