@@ -17,6 +17,7 @@ spring:
 
 role:
   user: ROLE_USER
+  admin: ROLE_ADMIN
 
 app:
   secret: secret
@@ -32,4 +33,4 @@ server:
 
 logging:
   level:
-    root: debug
+    root: info

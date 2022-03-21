@@ -10,8 +10,7 @@ RUN mkdir /tmp-build
 COPY . /tmp-build
 COPY ./src/env/.env-$REACT_APP_SERVER_PORT /tmp-build/.env
 RUN (cd /tmp-build; npm install; npm run build)
-RUN mv /tmp-build/build /app/build
-RUN rm -r /tmp-build
+RUN mv /tmp-build/build /app/build; rm -r /tmp-build
 
 # install serve
 RUN npm i -g serve

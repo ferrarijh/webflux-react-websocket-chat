@@ -20,11 +20,6 @@ public class AppSecurityComponent {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    JWTVerifier jwtVerifier(Algorithm algorithm){
-//        return JWT.require(algorithm).build();
-//    }
-
     @Bean
     Algorithm algorithm(){
         return Algorithm.HMAC256(props.getSecret());
