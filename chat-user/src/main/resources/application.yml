@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: chat-user-service
+
   datasource:
     url: jdbc:mysql://localhost:3306/user_db
     username: root
@@ -30,6 +33,12 @@ app:
 server:
   error:
     include-message: always
+
+### Eureka Server Location ###
+eureka:
+  sclient:
+    service-url:
+      defaultZone: http://localhost:8761
 
 logging:
   level:
