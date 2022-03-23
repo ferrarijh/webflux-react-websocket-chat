@@ -1,6 +1,5 @@
 package com.jonathan.chat.user.api;
 
-import com.jonathan.chat.user.dto.JoinForm;
 import com.jonathan.chat.user.dto.TokenPair;
 import com.jonathan.chat.user.entity.AppUser;
 import com.jonathan.chat.user.service.AppUserService;
@@ -24,7 +23,7 @@ public class AppUserController {
     @PostMapping(path = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> join(
             HttpServletRequest request,
-            @RequestBody JoinForm joinForm
+            @RequestBody AppUser joinForm
     ){
         return ResponseEntity.created(URI.create(request.getRequestURI())).body(userService.registerUser(joinForm));
     }
@@ -36,14 +35,26 @@ public class AppUserController {
             @RequestBody AppUser principal
     ) {
         TokenPair tokens = userService.authenticate(principal);
-        response.addCookie(new Cookie("access_token", tokens.getAccessToken()));
-        response.addCookie(new Cookie("refresh_token", tokens.getRefreshToken()));
+        Cookie atCookie = new Cookie("access_token", tokens.getAccessToken());
+        Cookie rtCookie = new Cookie("refresh_token", tokens.getRefreshToken());
+        atCookie.setHttpOnly(true);
+        rtCookie.setHttpOnly(true);
+        response.addCookie(atCookie);
+        response.addCookie(rtCookie);
         return ResponseEntity.created(URI.create(request.getRequestURI())).build();
+    }
+
+    @DeleteMapping(path = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<String> deleteUser(
+            @RequestBody AppUser user
+    ){
+        userService.deleteUser(user);
+        return ResponseEntity.ok().body(String.format("Successfully deleted user [ %s ]", user.getUsername()));
     }
 
     /* Only for logging */
     @GetMapping(path = "/signout")
     ResponseEntity<String> signOut(){
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("signout");
     }
 }

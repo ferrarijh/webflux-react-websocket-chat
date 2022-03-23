@@ -16,24 +16,26 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.jonathan.chat.dto.ChatMessage.Type.*;
 
 @Service
 @RequiredArgsConstructor
-public class RedisService {
+public class ChatService {
     private final AppMapper mapper;
     private final ReactiveRedisTemplate<String, String> redisTemplate;
     private final LocalRoomManager localRoomManager;
     private final ConcurrentHashMap<String, Disposable> subscriptions = new ConcurrentHashMap<>();  //key=roomId
 
     /**
-     * Subscribe to channel associated with room id. Incoming messages are piped to respective room's sink.
-     * Subscription is idempotent.
+     * Subscribe to channel associated with room id. Incoming messages are piped to respective room's sink. Subscription is idempotent.
      */
     public void subscribe(String roomId) {
         subscriptions.computeIfAbsent(roomId, rid ->
                 redisTemplate.listenToChannel(rid)
                         .doOnNext(msg -> {
-                            var chatMessage = mapper.readChatMessage(msg.getMessage());
+                            ChatMessage chatMessage = mapper.readChatMessage(msg.getMessage());
                             localRoomManager.getRoom(rid).tryEmitNext(chatMessage);
                         }).doOnError(Throwable::printStackTrace)
                         .subscribe()
@@ -54,7 +56,7 @@ public class RedisService {
     }
 
     /**
-     * Create mapping with key=room:$roomId:title and value in redis.
+     * Create mapping with key=room:${ROOM_ID}:title and value in redis.
      *
      * @return true if the room is created, false otherwise(i.e. room already exists in redis).
      */
@@ -70,10 +72,11 @@ public class RedisService {
      * @return the number of clients that received the message
      */
     public Mono<Long> handleChatMessage(String roomId, ChatMessage message) {
-        var type = ChatMessage.Type.valueOf(message.getType());
-        Mono<Void> zsetOp = Mono.empty();
-        var roomUsersKey = roomUsersKey(roomId);
-        var roomTitleKey = roomTitleKey(roomId);
+        ChatMessage.Type type = ChatMessage.Type.valueOf(message.getType());
+        String roomUsersKey = roomUsersKey(roomId);
+        String roomTitleKey = roomTitleKey(roomId);
+
+        Mono<Void> zsetOp;
         switch (type) {
             case USER_IN:
                 zsetOp = redisTemplate.opsForZSet()
@@ -86,19 +89,14 @@ public class RedisService {
                         .then(redisTemplate.hasKey(roomUsersKey)
                                 .filter(ex -> !ex)
                                 //delete room title if there's no user in the zset.
-                                .flatMap(__ -> {
-                                    localRoomManager.removeRoom(roomId);
-                                    return redisTemplate.opsForZSet().delete(roomTitleKey);
-                                })
+                                .flatMap(__ -> redisTemplate.opsForZSet().delete(roomTitleKey))
                         ).then();
                 break;
+            default:
+                zsetOp = Mono.empty();
         }
 
         return zsetOp.then(redisTemplate.convertAndSend(roomId, mapper.write(message)));
-    }
-
-    public Mono<Long> handleChatMessage(LocalRoom room, ChatMessage msg){
-        return this.handleChatMessage(room.getId(), msg);
     }
 
     public Flux<String> getAllUsers(String roomId) {
@@ -108,7 +106,7 @@ public class RedisService {
     public Flux<RoomThumbnail> getAllRoomThumbnails() {
         return redisTemplate.scan(ScanOptions.scanOptions().match("room:*:users").count(Integer.MAX_VALUE).build())
                 .flatMap(roomUsersKey -> {
-                    var roomId = roomUsersKey.split(":")[1];
+                    String roomId = roomUsersKey.split(":")[1];
                     return Mono.zip(
                             Mono.just(roomId),
                             redisTemplate.opsForValue().get(roomTitleKey(roomId)),
@@ -139,4 +137,21 @@ public class RedisService {
     private String roomUsersKey(String id) {
         return "room:" + id + ":users";
     }
+
+    //================================ LocalRoomManager ================================
+
+    public LocalRoom getRoom(String id) {
+        return localRoomManager.getRoom(id);
+    }
+
+    public void removeLocalRoom(String roomId) {
+        this.localRoomManager.removeRoom(roomId);
+        this.unsubscribe(roomId);
+    }
+
+    public LocalRoom createLocalRoom(String roomId){
+        return this.localRoomManager.createRoom(roomId, null);
+    }
+
+
 }

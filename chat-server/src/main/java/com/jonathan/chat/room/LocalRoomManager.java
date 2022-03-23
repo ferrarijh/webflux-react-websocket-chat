@@ -25,17 +25,21 @@ public class LocalRoomManager {
 
     private final AppMapper mapper;
 
-    public LocalRoom createFirstRoom(String title){
-        String roomId = UUID.randomUUID().toString();
-        LocalRoom firstLocalRoom = new LocalRoom(roomId, title);
-        this.roomMap.put(roomId, firstLocalRoom);
-
-        return firstLocalRoom;
-    }
+//    public LocalRoom createFirstRoom(String title){
+//        String roomId = UUID.randomUUID().toString();
+//        LocalRoom firstLocalRoom = new LocalRoom(roomId, title);
+//        this.roomMap.put(roomId, firstLocalRoom);
+//
+//        return firstLocalRoom;
+//    }
 
     public LocalRoom createRoom(RoomThumbnail thumbnail){
-        LocalRoom localRoom = new LocalRoom(thumbnail.getId(), thumbnail.getTitle());
-        this.roomMap.put(thumbnail.getId(), localRoom);
+        return this.createRoom(thumbnail.getId(), thumbnail.getTitle());
+    }
+
+    public LocalRoom createRoom(String id, String title){
+        LocalRoom localRoom = new LocalRoom(id, title);
+        this.roomMap.put(id, localRoom);
 
         return localRoom;
     }

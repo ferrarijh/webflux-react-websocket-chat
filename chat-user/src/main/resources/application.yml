@@ -1,8 +1,16 @@
 spring:
+  application:
+    name: chat-user-service
+
   datasource:
     url: jdbc:mysql://localhost:3306/user_db
     username: root
     password: password
+
+    hikari:
+      connectionTimeout: 60000
+
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -17,6 +25,7 @@ spring:
 
 role:
   user: ROLE_USER
+  admin: ROLE_ADMIN
 
 app:
   secret: secret
@@ -30,6 +39,15 @@ server:
   error:
     include-message: always
 
+### Eureka ###
+
+eureka:
+#  instance:
+#    prefer-ip-address: true
+  client:
+    service-url:
+      default-zone: http://localhost:8761
+
 logging:
   level:
-    root: debug
+    root: info
