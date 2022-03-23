@@ -1,5 +1,6 @@
 package com.jonathan.chat.user.api;
 
+import com.jonathan.chat.user.dto.CustomResponse;
 import com.jonathan.chat.user.dto.TokenPair;
 import com.jonathan.chat.user.entity.AppUser;
 import com.jonathan.chat.user.service.AppUserService;
@@ -21,7 +22,7 @@ public class AppUserController {
     private final AppUserService userService;
 
     @PostMapping(path = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<String> join(
+    ResponseEntity<CustomResponse> join(
             HttpServletRequest request,
             @RequestBody AppUser joinForm
     ){

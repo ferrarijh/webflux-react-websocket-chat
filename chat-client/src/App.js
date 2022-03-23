@@ -2,6 +2,7 @@ import { React } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import Chat from './components/chat/Chat';
 import Login from './components/login/Login';
+import Join from './components/join/Join';
 import './App.css';
 import AuthProvider from './components/contexts/AuthProvider';
 import Rooms from './components/rooms/Rooms';
@@ -18,6 +19,7 @@ function App() {
                         <Route path="chat">
                             {/* <Route path="" element={<Navigate to="login" replace={true} />} /> */}
                             <Route path="login" element={<Login />} />
+                            <Route path="join" element={<Join/>}/>
                             <Route path="rooms" element={
                                 <RequireAuth>
                                     <Rooms />

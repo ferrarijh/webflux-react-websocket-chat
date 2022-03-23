@@ -41,19 +41,17 @@ public class ChatHttpHandler {
     }
 
     public Mono<ServerResponse> createRoom(ServerRequest request) {
-        return request.bodyToMono(RoomThumbnail.class)  //only title field is present here
-                .flatMap(thumbnailTitleOnly -> {
+        return request.bodyToMono(RoomThumbnail.class)
+                .flatMap(thumbnailTitleOnly -> {    //only title field is present here
                     if (thumbnailTitleOnly.getTitle().isBlank())
                         return ServerResponse.badRequest().bodyValue(new ErrorMessage("Title should not be empty"));
 
-//                    LocalRoom room = localRoomManager.createFirstRoom(thumbnailTitleOnly.getTitle());
-//                    RoomThumbnail responseBody = new RoomThumbnail(room.getId(), room.getTitle(), 0);
                     String newRoomId = UUID.randomUUID().toString();
                     RoomThumbnail newRoomThumbnail = new RoomThumbnail(newRoomId, thumbnailTitleOnly.getTitle(), 0);
                     return chatService.createRoom(newRoomThumbnail)
                             .flatMap(created -> {
-                                if (created)
-                                    return ServerResponse.created(URI.create("http://localhost:8080/" + newRoomThumbnail.getId()))
+                                if (created)    //TODO("set host address from eureka")
+                                    return ServerResponse.created(URI.create("http://localhost:8080/"+newRoomThumbnail.getId()))
                                             .bodyValue(newRoomThumbnail);
                                 else
                                     return ServerResponse.status(500).bodyValue(

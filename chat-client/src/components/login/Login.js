@@ -1,6 +1,6 @@
 import { LoadingStatus } from '../contexts/NetworkProvider';
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthProvider';
 import { MessageType as Type } from '../chat/Message';
 import Spinner from '../spinner/Spinner';
@@ -75,6 +75,7 @@ const Login = () => {
                     <input type="text" className="Text" name='username' placeholder=" username"/><br/>
                     <button type="submit" className="Button">Join Chat</button>
                 </form>
+                <Link to="../join">Sign Up</Link>
             </div>
             <div className="Space"/>
         </div>

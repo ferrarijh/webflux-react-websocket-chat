@@ -40,8 +40,10 @@ const Rooms = () => {
             console.log(err);
         });
 
-        if(!newRoomList)
+        if(!newRoomList){
+            console.log("newRoomList: "+newRoomList);
             return;
+        }
 
         setStatus(Status.IDLE);
         setRoomList(newRoomList);
