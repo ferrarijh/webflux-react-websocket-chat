@@ -47,7 +47,7 @@ const Chat = (props) => {
 
       switch (msg.type) {
         case Type.INIT:
-          setUserList(prev => [...prev, ...msg.user_list]);
+          setUserList(prev => [...prev, ...msg.user_list.filter(u => u !== username)]);
           break;
         case Type.USER_IN:
           if (msg.username === username)

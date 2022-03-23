@@ -1,8 +1,13 @@
+spring:
+  application:
+    name: chat-server-service
+
 redis:
   host: localhost
 
 logging:
   level:
     io:
-      lettuce: trace
-    root: info
+      lettuce: debug
+
+    root: trace

@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 //@NoArgsConstructor
 public class ChatMessage {
     private String username;

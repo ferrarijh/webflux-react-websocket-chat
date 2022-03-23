@@ -55,6 +55,6 @@ public class AppUserController {
     /* Only for logging */
     @GetMapping(path = "/signout")
     ResponseEntity<String> signOut(){
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("signout");
     }
 }

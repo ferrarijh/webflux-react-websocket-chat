@@ -3,9 +3,8 @@ package com.jonathan.chat.handler;
 import com.jonathan.chat.dto.ChatMessage;
 import com.jonathan.chat.dto.ErrorMessage;
 import com.jonathan.chat.dto.RoomThumbnail;
-import com.jonathan.chat.room.LocalRoom;
 import com.jonathan.chat.room.LocalRoomManager;
-import com.jonathan.chat.service.RedisService;
+import com.jonathan.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static com.jonathan.chat.dto.ChatMessage.Type.*;
 
@@ -24,7 +24,7 @@ import static com.jonathan.chat.dto.ChatMessage.Type.*;
 public class ChatHttpHandler {
 
     private final LocalRoomManager localRoomManager;
-    private final RedisService redisService;
+    private final ChatService chatService;
 
     public Mono<ServerResponse> login(ServerRequest request) {
         return request.bodyToMono(ChatMessage.class)
@@ -46,13 +46,15 @@ public class ChatHttpHandler {
                     if (thumbnailTitleOnly.getTitle().isBlank())
                         return ServerResponse.badRequest().bodyValue(new ErrorMessage("Title should not be empty"));
 
-                    LocalRoom room = localRoomManager.createFirstRoom(thumbnailTitleOnly.getTitle());
-                    RoomThumbnail responseBody = new RoomThumbnail(room.getId(), room.getTitle(), 0);
-                    return redisService.createRoom(responseBody)
+//                    LocalRoom room = localRoomManager.createFirstRoom(thumbnailTitleOnly.getTitle());
+//                    RoomThumbnail responseBody = new RoomThumbnail(room.getId(), room.getTitle(), 0);
+                    String newRoomId = UUID.randomUUID().toString();
+                    RoomThumbnail newRoomThumbnail = new RoomThumbnail(newRoomId, thumbnailTitleOnly.getTitle(), 0);
+                    return chatService.createRoom(newRoomThumbnail)
                             .flatMap(created -> {
                                 if (created)
-                                    return ServerResponse.created(URI.create("http://localhost:8080/" + responseBody.getId()))
-                                            .bodyValue(responseBody);
+                                    return ServerResponse.created(URI.create("http://localhost:8080/" + newRoomThumbnail.getId()))
+                                            .bodyValue(newRoomThumbnail);
                                 else
                                     return ServerResponse.status(500).bodyValue(
                                             new ErrorMessage("Room already exists - THIS ERROR MUST NOT OCCUR")
@@ -62,14 +64,14 @@ public class ChatHttpHandler {
     }
 
     public Mono<ServerResponse> getAllRooms(ServerRequest _req) {
-        return redisService.getAllRoomThumbnails().collectList()
+        return chatService.getAllRoomThumbnails().collectList()
                 .flatMap(list -> ServerResponse.ok().bodyValue(list))
                 .doOnError(Throwable::printStackTrace);
     }
 
     public Mono<ServerResponse> getRoomThumbnail(ServerRequest request) {
         String id = request.pathVariable("id");
-        return redisService.getRoomThumbnail(id)
+        return chatService.getRoomThumbnail(id)
                 .flatMap(thumbnail -> {
                     if (!localRoomManager.isPresent(id))
                         localRoomManager.createRoom(thumbnail);

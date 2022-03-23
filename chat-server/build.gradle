@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.3'
+    id 'org.springframework.boot' version '2.6.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
@@ -11,6 +11,10 @@ targetCompatibility = '11'
 
 repositories {
     mavenCentral()
+}
+
+ext{
+    set('springCloudVersion', "2021.0.1")
 }
 
 dependencies {
@@ -30,6 +34,14 @@ dependencies {
 
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
 
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 test {

@@ -1,16 +1,38 @@
 spring:
+  application:
+    name: chat-gw-service
+
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            add-to-simple-url-handler-mapping: true
+            allowedHeaders: '*'
+            allowedOrigins: 'http://localhost:3000'
+            allowedMethods:
+              - GET
+              - POST
       routes:
-        - id: chat-server-0
-          uri: http://localhost:8080
+#        - id: chat-server-0
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/chat/0/**
+#          filters:
+#            - RewritePath=/chat/0/(?<segment>.*), /chat/${segment}
+#        - id: chat-server-1
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path=/chat/1/**
+#          filters:
+#            - RewritePath=/chat/1/(?<segment>.*), /chat/${segment}
+        - id: chat-user-service
+          uri: lb://CHAT-USER-SERVICE
           predicates:
-            - Path=/chat/0/**
-          filters:
-            - RewritePath=/chat/0/(?<segment>.*), /chat/${segment}
-        - id: chat-server-1
-          uri: http://localhost:8081
+            - Path=/chat/user/**
+        - id: chat-server-service
+          uri: lb://CHAT-SERVER-SERVICE
           predicates:
-            - Path=/chat/1/**
-          filters:
-            - RewritePath=/chat/1/(?<segment>.*), /chat/${segment}
+            - Path=/chat/room/**, /chat/rooms/**, /chat/login
+        - id: chat-server-websocket-service
+          uri: lb://
