@@ -1,4 +1,4 @@
-.Login {
+.Join {
     width: 100%;
     height: 100%;
     display: flex;
@@ -8,7 +8,7 @@
     background-color: #f8f8f8;
 }
 
-.LoginContainer {
+.JoinContainer {
     /* flex: 2; */
     display: flex;
     flex-direction: column;
@@ -21,13 +21,9 @@
 .WelcomeGuide {
     margin-left: 10px;
     font-size: 2em;
-    text-align: center;
-}
-
-.LoginForm { 
-    border-radius: 6px;
-    border: 1px solid #e0e0e0;
-    padding: 5px;
+    text-align: left;
+    color: #bbb;
+    font-style: italic;
 }
 
 .Status {
@@ -37,11 +33,17 @@
     box-sizing: border-box;
 }
 
-.LoginForm > .Text { 
+.JoinForm > label {
+    font-size: 1.3rem;
+    margin-left: 0.2rem;
+    font-weight: bold;
+}
+
+.JoinForm > input { 
     border-radius: 3px;
     height: 2em;
     width: 400px;
-    margin: 2px;
+    margin-top: 0.3rem;
     border: 1px solid #e0e0e0;
     background-color: transparent;
     box-sizing: border-box;
@@ -49,20 +51,19 @@
     font-size: 1.3em;
 }
 
-.LoginForm > .Button { 
+.JoinForm > button { 
     border-radius: 3px;
     height: 2em;
     width: 400px;
-    margin: 2px;
     border: 1px solid #e0e0e0;
     box-sizing: border-box;
     text-align: left;
     font-size: 1.3em;
 }
 
-.Link {
-    text-align: end;
-    margin-right: 0.5em;
+.JoinForm > .ConflictWarning {
+    color: red;
+    font-size: 1.1rem;
 }
 
 .Button:hover {background-color: #ddd;}

@@ -36,7 +36,7 @@ const Rooms = () => {
             }
         }).then(resp => resp.json())
         .catch(err => {
-            setStatus(Status.ERROR);
+            setStatus(Status.DISCONNECTED);
             console.log(err);
         });
 
@@ -68,7 +68,7 @@ const Rooms = () => {
             body: JSON.stringify({title: title})
         }).catch(err => {
             alert("Server not responding.. Error: "+err);
-            setStatus(Status.ERROR);
+            setStatus(Status.DISCONNECTED);
         });
 
         if(!response)
@@ -89,7 +89,7 @@ const Rooms = () => {
                 return roomList.length === 0 && <div className="NoRoomGuide">There are no rooms right now.</div>;
             case Status.LOADING:
                 return <div className="SpinnerContainer"><Spinner/></div>;
-            case Status.ERROR:
+            case Status.DISCONNECTED:
                 return <div className="ErrorGuide">Failed to connect with the server :(</div>;
         }
     }

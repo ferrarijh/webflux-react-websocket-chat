@@ -1,8 +1,9 @@
 const LoadingStatus = Object.freeze({
     IDLE: "IDLE",
     LOADING: "LOADING",
-    CONFLICT: "CONFLICT",
-    ERROR: "ERROR"
+    HTTP_409: "CONFLICT",
+    HTTP_500: "INTERNAL_SERVER_ERROR",
+    DISCONNECTED: "DISCONNECTED"
 });
 
 export {LoadingStatus};

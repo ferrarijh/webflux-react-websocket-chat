@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Date;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(value = AppProperties.class)
+@TestPropertySource("classpath:test.properties")
 public class SecurityTest {
 
     @Autowired
@@ -42,14 +45,19 @@ public class SecurityTest {
         JWTVerifier verifier = JWT.require(algorithm)
                 .build();
 
-        String token = JWT.create().withClaim("jiho", "USER")
-                .withExpiresAt(new Date(System.currentTimeMillis()+30000))
+        Date in30s = new Date(System.currentTimeMillis()+30000);
+
+        String token = JWT.create()
+                .withClaim("jiho", "USER")
+                .withExpiresAt(in30s)
                 .sign(algorithm);
 
         try{
-            verifier.verify(token);
+            DecodedJWT decoded = verifier.verify(token);
 
-            fail();
+            Assertions.assertEquals("")
+            Assertions.assertEquals(decoded.getSignature(), props.getSecret());
+            Assertions.assertEquals(decoded.getExpiresAt(), in30s);
         }catch (JWTVerificationException e){
             System.out.println("passed :)");
             e.printStackTrace();
