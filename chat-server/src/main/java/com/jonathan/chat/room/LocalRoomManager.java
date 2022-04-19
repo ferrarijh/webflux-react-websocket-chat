@@ -18,10 +18,11 @@ import java.util.concurrent.ConcurrentMap;
 public class LocalRoomManager {
 
     /* key=roomId */
+    //TODO("type may be replaced with HashMap since keys are UUID")
     private final ConcurrentMap<String, LocalRoom> roomMap = new ConcurrentHashMap<>();
 
     /* key=title */
-    private final ConcurrentMap<String, String> titleToRoomIdMap = new ConcurrentHashMap<>();
+//    private final ConcurrentMap<String, String> titleToRoomIdMap = new ConcurrentHashMap<>();
 
     private final AppMapper mapper;
 
@@ -49,7 +50,7 @@ public class LocalRoomManager {
         this.roomMap.remove(roomId);
     }
 
-    public void removeRoom(LocalRoom room){
-        this.roomMap.remove(room.getId());
-    }
+//    public void removeRoom(LocalRoom room){
+//        this.roomMap.remove(room.getId());
+//    }
 }
