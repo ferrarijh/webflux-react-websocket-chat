@@ -4,6 +4,7 @@ import { LoadingStatus as Status } from '../contexts/NetworkProvider';
 import Resources from '../../Resources';
 import Spinner from '../spinner/Spinner';
 import './Join.css';
+import { toHaveAccessibleDescription } from '@testing-library/jest-dom/dist/matchers';
 
 const baseUrl = "http://"+Resources.HOSTNAME +":"+Resources.PORT+"/chat/user/join";
 
@@ -51,12 +52,33 @@ const Join = () => {
             console.log(data);
             alert(data.message);
             navigate(-1);
+            return;
         }
-        else if(response.status === 409){
+
+        if(response.status === 409){
             setStatus(Status.HTTP_409);
-            alert(data.message);
+        }else if(response.status === 500){
+            setStatus(Status.HTTP_500);
+        }else if(response.status === 503){
+            setStatus(Status.HTTP_503);
         }else{
-            alert("Unknown Exception: "+data);
+            setStatus(Status.UNKNOWN);
+        }
+        alert(data.error);
+    }
+
+    const renderGuide = () => {
+        switch(status){
+            case Status.IDLE:
+                return <></>;
+            case Status.LOADING:
+                return <div className="SpinnerContainer"><Spinner/></div>;
+            case Status.DISCONNECTED:
+                return <div className="ErrorGuide">Failed to connect with the server :(</div>;
+            case Status.HTTP_500:
+                return <span><i>Internal Server Error :(</i></span>;
+            case Status.HTTP_503:
+                return <span><i>Service Available :(</i></span>;
         }
     }
 
@@ -65,9 +87,7 @@ const Join = () => {
             <div className="JoinContainer">
                 <p className="WelcomeGuide">Become a member</p>
                 <div className="Status">
-                    {status === Status.LOADING && <Spinner/>}
-                    {status === Status.DISCONNECTED && <span><i>Can't connect with the server :(</i></span>}
-                    {status === Status.HTTP_500 && <span><i>Internal Server Error :(</i></span>}
+                    {renderGuide()}
                 </div>
                 <form className="JoinForm" onSubmit={handleSubmit}>
                     <label>Username</label><br/>

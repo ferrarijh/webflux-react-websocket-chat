@@ -7,8 +7,10 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
+            allowedOrigins:
+              - http://127.0.0.1:3000
+            allow-credentials: true
             allowedHeaders: '*'
-            allowedOrigins: '*'
             allowedMethods:
               - GET
               - POST
@@ -21,10 +23,16 @@ spring:
           uri: lb://CHAT-SERVER-SERVICE
           predicates:
             - Path=/chat/room/**, /chat/rooms/**, /chat/login
-#          filters:
-#            - AuthFilter
-app:
+          filters:
+            - AuthFilter
+#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+auth:
   secret: secret
+  issuer: chat-user-service/chat/user/signin
+  role:
+    user: ROLE_USER
+    admin: ROLE_ADMIN
 
 logging:
   level:

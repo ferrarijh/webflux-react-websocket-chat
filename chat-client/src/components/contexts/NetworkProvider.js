@@ -3,7 +3,9 @@ const LoadingStatus = Object.freeze({
     LOADING: "LOADING",
     HTTP_409: "CONFLICT",
     HTTP_500: "INTERNAL_SERVER_ERROR",
-    DISCONNECTED: "DISCONNECTED"
+    HTTP_503: "SERVICE_UNAVAILABLE",
+    DISCONNECTED: "DISCONNECTED",
+    UNKNOWN: "UNKNOWN"
 });
 
 export {LoadingStatus};

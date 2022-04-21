@@ -6,10 +6,8 @@ spring:
     url: jdbc:mysql://localhost:3306/user_db
     username: root
     password: password
-
     hikari:
       connectionTimeout: 60000
-
 
   jpa:
     hibernate:
@@ -19,9 +17,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+
   jackson:
     serialization:
       indent_output: true
+
+#################################################
+##################### DB ########################
 
 role:
   user: ROLE_USER
@@ -34,12 +36,14 @@ app:
     access-token: 30
     # in days
     refresh-token: 30
+  issuer: chat-user-service/chat/user/signin
 
 server:
   error:
     include-message: always
 
-### Eureka ###
+#################################################
+################### Eureka ######################
 
 eureka:
 #  instance:
@@ -50,4 +54,4 @@ eureka:
 
 logging:
   level:
-    root: info
+    root: debug

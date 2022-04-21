@@ -2,6 +2,7 @@ package com.jonathan.chat.handler;
 
 import com.jonathan.chat.dto.ChatMessage;
 import com.jonathan.chat.dto.ErrorMessage;
+import com.jonathan.chat.dto.RoomList;
 import com.jonathan.chat.dto.RoomThumbnail;
 import com.jonathan.chat.room.LocalRoomManager;
 import com.jonathan.chat.service.ChatService;
@@ -63,7 +64,7 @@ public class ChatHttpHandler {
 
     public Mono<ServerResponse> getAllRooms(ServerRequest _req) {
         return chatService.getAllRoomThumbnails().collectList()
-                .flatMap(list -> ServerResponse.ok().bodyValue(list))
+                .flatMap(list -> ServerResponse.ok().bodyValue(new RoomList(list)))
                 .doOnError(Throwable::printStackTrace);
     }
 

@@ -10,6 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class AppProperties {
 
-    @Value("${app.secret}")
+    @Value("${auth.secret}")
     private String secret;
+
+    @Value("${auth.role.user}")
+    private String roleUser;
+
+    @Value("${auth.issuer}")
+    private String issuer;
 }

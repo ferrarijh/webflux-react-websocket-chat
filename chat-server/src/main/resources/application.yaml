@@ -10,4 +10,4 @@ logging:
     io:
       lettuce: debug
 
-    root: info
+    root: debug

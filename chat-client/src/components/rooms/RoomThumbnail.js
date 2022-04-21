@@ -13,6 +13,7 @@ const RoomThumbnail = (props) => {
     const handleClick = () => {
         let url = props.baseUrl + "/" + props.room.id;
         fetch(url, {
+            credentials: 'include',
             method: "GET",
             headers: {
                 "Content-Type": "application/json"

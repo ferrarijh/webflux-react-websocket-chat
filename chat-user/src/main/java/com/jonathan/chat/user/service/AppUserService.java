@@ -61,7 +61,7 @@ public class AppUserService {
         String accessToken = JWT.create()
                 .withSubject(principal.getUsername())
                 .withExpiresAt(new Date(now + props.getAccessTokenDuration() * 60 * 1000))
-                .withIssuer("chat-user-service/chat/user/signin")
+                .withIssuer(props.getIssuer())
                 .withClaim("roles",
                         user.get().getRoles().stream()
                                 .map(AppUserRole::getName)
@@ -71,7 +71,7 @@ public class AppUserService {
         String refreshToken = JWT.create()
                 .withSubject(principal.getUsername())
                 .withExpiresAt(new Date(now + props.getAccessTokenDuration()* 60 * 1000))
-                .withIssuer("chat-user-service/chat/user/signin")
+                .withIssuer(props.getIssuer())
                 .sign(hmac256);
         return new TokenPair(accessToken, refreshToken);
     }

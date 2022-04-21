@@ -10,7 +10,6 @@ import { AuthContext } from '../contexts/AuthProvider';
 const baseUrl = "http://"+Resources.HOSTNAME +":"+Resources.PORT+"/chat";
 const roomBaseUrl = baseUrl + "/room";
 const roomsBaseUrl = baseUrl + "/rooms";
-const roomChatBaseUrl = roomBaseUrl + "/chat";
 
 const Rooms = () => {
 
@@ -29,7 +28,8 @@ const Rooms = () => {
     const updateRoomList = async () => {
         setStatus(Status.LOADING);
 
-        let newRoomList = await fetch(roomsBaseUrl, {
+        let data = await fetch(roomsBaseUrl, {
+            credentials: 'include',
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -40,13 +40,13 @@ const Rooms = () => {
             console.log(err);
         });
 
-        if(!newRoomList){
-            console.log("newRoomList: "+newRoomList);
+        if(!data.list){
+            console.log(data.message);
             return;
         }
 
         setStatus(Status.IDLE);
-        setRoomList(newRoomList);
+        setRoomList(data.list);
     }
 
     const handleSubmit = e => {
@@ -61,6 +61,7 @@ const Rooms = () => {
 
     const createRoom = async (title) => {
         let response = await fetch(roomBaseUrl, {
+            credentials: 'include',
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

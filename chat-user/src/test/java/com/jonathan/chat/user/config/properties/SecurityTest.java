@@ -3,11 +3,8 @@ package com.jonathan.chat.user.config.properties;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,10 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(value = AppProperties.class)
@@ -29,7 +27,16 @@ public class SecurityTest {
     @Autowired
     AppProperties props;
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    PasswordEncoder passwordEncoder;
+    Algorithm hmac256;
+    JWTVerifier verifier;
+
+    @BeforeEach
+    void init(){
+        passwordEncoder = new BCryptPasswordEncoder();
+        hmac256 = Algorithm.HMAC256(props.getSecret());
+        verifier = JWT.require(hmac256).build();
+    }
 
     @Test
     void BCrypt_always_returns_different_string(){
@@ -40,30 +47,20 @@ public class SecurityTest {
     }
 
     @Test
-    void verifyJWT(){
-        Algorithm algorithm = Algorithm.HMAC256(props.getSecret());
-        JWTVerifier verifier = JWT.require(algorithm)
-                .build();
+    void test_verifier(){
+        String jwtSample;
+        DecodedJWT decodedJwtSample;
 
-        Date in30s = new Date(System.currentTimeMillis()+30000);
-
-        String token = JWT.create()
-                .withClaim("jiho", "USER")
+        Date in30s = new Date(System.currentTimeMillis()+30_000);
+        String subject = "jiho";
+        List<String> roles = Arrays.asList("ADMIN", "USER");
+        jwtSample = JWT.create()
+                .withSubject("jiho")
+                .withClaim("roles", roles)
                 .withExpiresAt(in30s)
-                .sign(algorithm);
+                .sign(hmac256);
 
-        try{
-            DecodedJWT decoded = verifier.verify(token);
-
-            Assertions.assertEquals("")
-            Assertions.assertEquals(decoded.getSignature(), props.getSecret());
-            Assertions.assertEquals(decoded.getExpiresAt(), in30s);
-        }catch (JWTVerificationException e){
-            System.out.println("passed :)");
-            e.printStackTrace();
-        }
-
-
+        decodedJwtSample = verifier.verify(jwtSample);
     }
 
 }
