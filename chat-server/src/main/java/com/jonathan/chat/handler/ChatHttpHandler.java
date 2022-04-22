@@ -27,19 +27,19 @@ public class ChatHttpHandler {
     private final LocalRoomManager localRoomManager;
     private final ChatService chatService;
 
-    public Mono<ServerResponse> login(ServerRequest request) {
-        return request.bodyToMono(ChatMessage.class)
-                .filter(msg -> msg.getType().equals(IN_REQ.getValue()))
-                .flatMap(msg ->
-                        ServerResponse.ok()
-                                .bodyValue(
-                                        ChatMessage.builder()
-                                                .username(msg.getUsername())
-                                                .type(IN_OK.getValue())
-                                                .date(LocalDateTime.now())
-                                                .build()
-                                )).doOnError(Throwable::printStackTrace);
-    }
+//    public Mono<ServerResponse> login(ServerRequest request) {
+//        return request.bodyToMono(ChatMessage.class)
+//                .filter(msg -> msg.getType().equals(IN_REQ.getValue()))
+//                .flatMap(msg ->
+//                        ServerResponse.ok()
+//                                .bodyValue(
+//                                        ChatMessage.builder()
+//                                                .username(msg.getUsername())
+//                                                .type(IN_OK.getValue())
+//                                                .date(LocalDateTime.now())
+//                                                .build()
+//                                )).doOnError(Throwable::printStackTrace);
+//    }
 
     public Mono<ServerResponse> createRoom(ServerRequest request) {
         return request.bodyToMono(RoomThumbnail.class)

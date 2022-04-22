@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jonathan.chat.gw.dto.AppResponseBody;
 import com.jonathan.chat.gw.dto.AuthDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -18,6 +19,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AppHandler {
 
     private final JWTVerifier verifier;
@@ -26,7 +28,7 @@ public class AppHandler {
         if(!request.cookies().containsKey("access_token"))
             return ServerResponse.status(HttpStatus.UNAUTHORIZED).build();
 
-        String submittedToken = Objects.requireNonNull(request.cookies().getFirst("access_token")).toString();
+        String submittedToken = Objects.requireNonNull(request.cookies().getFirst("access_token")).getValue().toString();
         try{
             DecodedJWT verifiedToken = verifier.verify(submittedToken);
             String username = verifiedToken.getSubject();
