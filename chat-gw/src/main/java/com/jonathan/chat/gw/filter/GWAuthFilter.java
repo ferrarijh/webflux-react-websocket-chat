@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonathan.chat.gw.dto.AppResponseBody;
 import com.jonathan.chat.gw.security.AppProperties;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,14 +28,14 @@ import java.util.Objects;
 
 @Component
 @Slf4j
-public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
+public class GWAuthFilter extends AbstractGatewayFilterFactory<GWAuthFilter.Config> {
 
     private final JWTVerifier verifier;
     private final AppProperties props;
     private final ObjectMapper mapper;
 
     @Autowired
-    public AuthFilter(JWTVerifier verifier, AppProperties props, ObjectMapper mapper){
+    public GWAuthFilter(JWTVerifier verifier, AppProperties props, ObjectMapper mapper){
         super(Config.class);
         this.verifier = verifier;
         this.props = props;

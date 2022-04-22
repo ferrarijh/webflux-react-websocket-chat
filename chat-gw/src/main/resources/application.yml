@@ -24,7 +24,7 @@ spring:
           predicates:
             - Path=/chat/room/**, /chat/rooms/**, /chat/login
           filters:
-            - AuthFilter
+            - GWAuthFilter
 #            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
 auth:

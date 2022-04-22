@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class GWHandler {
+public class AppHandler {
 
     private final JWTVerifier verifier;
 
@@ -38,7 +38,7 @@ public class GWHandler {
         }
     }
 
-    public Mono<ServerResponse> handleRemoveToken(ServerRequest request){
+    public Mono<ServerResponse> handleRemoveToken(ServerRequest request) {
         ResponseCookie accessTokenCookie = ResponseCookie.from("access_token", "")
                 .maxAge(0)
                 .build();
