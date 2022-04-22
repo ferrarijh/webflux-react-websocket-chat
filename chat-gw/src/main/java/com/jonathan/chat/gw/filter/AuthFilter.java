@@ -25,8 +25,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
-@Component
+//TODO("Figure out why using @RequiredArgsConstructor throws exception"
 //@RequiredArgsConstructor
+
+@Component
 @Slf4j
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
