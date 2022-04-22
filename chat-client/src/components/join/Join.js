@@ -4,9 +4,8 @@ import { LoadingStatus as Status } from '../contexts/NetworkProvider';
 import Resources from '../../Resources';
 import Spinner from '../spinner/Spinner';
 import './Join.css';
-import { toHaveAccessibleDescription } from '@testing-library/jest-dom/dist/matchers';
 
-const baseUrl = "http://"+Resources.HOSTNAME +":"+Resources.PORT+"/chat/user/join";
+const joinUrl = "http://"+Resources.HOSTNAME +":"+Resources.PORT+"/chat/user/join";
 
 const Join = () => {
 
@@ -19,17 +18,17 @@ const Join = () => {
         let password = e.currentTarget.password.value;
 
         if(!username){
-            alert("Please submit username.");
+            alert("Please submit a username.");
             return;
         }
         else if (!password){
-            alert("Please submit password.");
+            alert("Please submit a password.");
             return;
         }
 
         setStatus(Status.LOADING);
 
-        let response = await fetch(baseUrl, {
+        let response = await fetch(joinUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -55,14 +54,18 @@ const Join = () => {
             return;
         }
 
-        if(response.status === 409){
-            setStatus(Status.HTTP_409);
-        }else if(response.status === 500){
-            setStatus(Status.HTTP_500);
-        }else if(response.status === 503){
-            setStatus(Status.HTTP_503);
-        }else{
-            setStatus(Status.UNKNOWN);
+        switch(response.status){
+            case 409:
+                setStatus(Status.HTTP_409);
+                break;
+            case 500:
+                setStatus(Status.HTTP_500);
+                break;
+            case 503:
+                setStatus(Status.HTTP_503);
+                break;
+            default:
+                setStatus(Status.UNKNOWN);
         }
         alert(data.error);
     }
@@ -86,9 +89,9 @@ const Join = () => {
         <div className="Join">
             <div className="JoinContainer">
                 <p className="WelcomeGuide">Become a member</p>
-                <div className="Status">
-                    {renderGuide()}
-                </div>
+
+                <div className="Status">{renderGuide()}</div>
+                
                 <form className="JoinForm" onSubmit={handleSubmit}>
                     <label>Username</label><br/>
                     <input type="text" className="Username" name='username' placeholder=" username"/><br/>

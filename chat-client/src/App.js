@@ -17,16 +17,23 @@ function App() {
                     <Routes>
                         <Route path="" element={<Navigate to="/chat/login" replace={true} />} />
                         <Route path="chat">
-                            {/* <Route path="" element={<Navigate to="login" replace={true} />} /> */}
-                            <Route path="login" element={<Login />} />
-                            <Route path="join" element={<Join/>}/>
+                            <Route path="login" element={
+                                // <RequireAuth requireAuth={false}>
+                                    <Login />
+                                // </RequireAuth>
+                            } />
+                            <Route path="join" element={
+                                // <RequireAuth requireAuth={false}>
+                                    <Join />
+                                // </RequireAuth>
+                            } />
                             <Route path="rooms" element={
-                                <RequireAuth>
+                                <RequireAuth requireAuth={true}>
                                     <Rooms />
                                 </RequireAuth>
                             } />
                             <Route path="room/chat/:roomId" element={
-                                <RequireAuth>
+                                <RequireAuth requireAuth={true}>
                                     <Chat />
                                 </RequireAuth>
                             } />

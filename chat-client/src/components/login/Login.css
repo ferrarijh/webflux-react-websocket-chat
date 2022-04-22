@@ -9,7 +9,6 @@
 }
 
 .LoginContainer {
-    /* flex: 2; */
     display: flex;
     flex-direction: column;
     border-radius: 5px;
@@ -37,7 +36,7 @@
     box-sizing: border-box;
 }
 
-.LoginForm > .Text { 
+.LoginForm > .Username, .LoginForm > .Password { 
     border-radius: 3px;
     height: 2em;
     width: 400px;

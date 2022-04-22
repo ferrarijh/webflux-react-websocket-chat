@@ -1,6 +1,8 @@
 const LoadingStatus = Object.freeze({
     IDLE: "IDLE",
     LOADING: "LOADING",
+    HTTP_401: "UNAUTHORIZED",
+    HTTP_404: "NOT_FOUND",
     HTTP_409: "CONFLICT",
     HTTP_500: "INTERNAL_SERVER_ERROR",
     HTTP_503: "SERVICE_UNAVAILABLE",

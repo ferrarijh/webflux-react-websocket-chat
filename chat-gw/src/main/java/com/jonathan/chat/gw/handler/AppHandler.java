@@ -28,7 +28,7 @@ public class AppHandler {
         if(!request.cookies().containsKey("access_token"))
             return ServerResponse.status(HttpStatus.UNAUTHORIZED).build();
 
-        String submittedToken = Objects.requireNonNull(request.cookies().getFirst("access_token")).getValue().toString();
+        String submittedToken = Objects.requireNonNull(request.cookies().getFirst("access_token")).getValue();
         try{
             DecodedJWT verifiedToken = verifier.verify(submittedToken);
             String username = verifiedToken.getSubject();
