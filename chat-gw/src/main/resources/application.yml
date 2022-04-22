@@ -7,25 +7,14 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            add-to-simple-url-handler-mapping: true
+            allowedOrigins:
+              - http://127.0.0.1:3000
+            allow-credentials: true
             allowedHeaders: '*'
-            allowedOrigins: 'http://localhost:3000'
             allowedMethods:
               - GET
               - POST
       routes:
-#        - id: chat-server-0
-#          uri: http://localhost:8080
-#          predicates:
-#            - Path=/chat/0/**
-#          filters:
-#            - RewritePath=/chat/0/(?<segment>.*), /chat/${segment}
-#        - id: chat-server-1
-#          uri: http://localhost:8081
-#          predicates:
-#            - Path=/chat/1/**
-#          filters:
-#            - RewritePath=/chat/1/(?<segment>.*), /chat/${segment}
         - id: chat-user-service
           uri: lb://CHAT-USER-SERVICE
           predicates:
@@ -34,5 +23,17 @@ spring:
           uri: lb://CHAT-SERVER-SERVICE
           predicates:
             - Path=/chat/room/**, /chat/rooms/**, /chat/login
-        - id: chat-server-websocket-service
-          uri: lb://
+          filters:
+            - GWAuthFilter
+#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+auth:
+  secret: secret
+  issuer: chat-user-service/chat/user/signin
+  role:
+    user: ROLE_USER
+    admin: ROLE_ADMIN
+
+logging:
+  level:
+    root: trace

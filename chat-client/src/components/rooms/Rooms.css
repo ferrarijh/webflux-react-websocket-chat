@@ -9,36 +9,38 @@
     align-items: center;
 }
 
-.UpdateRoomList {
+.Header {
     width: 90%;
-    display: flex;
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
 }
 
-.UpdateRoomList > .UpdateRoomListButton {
-    width: 100%;
+.UpdateRoomListButton {
+    display: block;
+    width: 90%;
     font-size: 2rem;
     border-radius: 3px;
     border: 1px solid #e0e0e0;
     box-sizing: border-box;
 }
 
-.UpdateRoomList > .UpdateRoomListButton:hover {
+.UpdateRoomListButton:hover {
     background-color: #ddd;
 }
 
-.UpdateRoomList > .UpdateRoomListButton:active {
+.UpdateRoomListButton:active {
     background-color: #bbb;
 }
 
 .CreateRoomForm {
-    margin-left: 10px;
     margin-top: 10px;
     width: 90%;
     font-size: 1.3rem;
 }
 
 .CreateRoomForm > .Text {
-    width: 30rem;
+    width: 100%;
     box-sizing: border-box;
     border: 1px solid #aaa;
 }

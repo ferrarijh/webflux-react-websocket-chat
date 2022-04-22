@@ -9,14 +9,13 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
-@Configuration
+//@Configuration
 public class WebConfig implements WebFluxConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry){
         corsRegistry.addMapping("/chat/**")
-//                .allowCredentials(false)
-                .allowedOrigins("*")
+                .allowedOrigins("http://127.0.0.1")
                 .allowedMethods("GET", "POST");
     }
 }

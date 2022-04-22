@@ -32,7 +32,6 @@ import static com.jonathan.chat.dto.ChatMessage.Type.*;
 public class ChatWebSocketHandler implements WebSocketHandler {
 
     private final AppMapper mapper;
-//    private final LocalRoomManager manager;
     private final ChatService chatService;
 
     private final ConcurrentMap<String, String> sessionIdToUserMap = new ConcurrentHashMap<>();
@@ -51,7 +50,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
         if (!chatService.didSubscribe(roomId))
             chatService.subscribe(roomId);
 
-        Consumer<SignalType> cleanup = createCleanup(room, session);
 
         //Received messages are published to the redis pubsub channel.
         session.receive()
@@ -60,11 +58,13 @@ public class ChatWebSocketHandler implements WebSocketHandler {
                     ChatMessage.Type type = ChatMessage.Type.valueOf(msg.getType());
                     if(type == USER_IN)
                         this.sessionIdToUserMap.put(session.getId(), msg.getUsername());
-                }).flatMap(cm -> this.chatService.handleChatMessage(roomId, cm))
+                }).flatMap(msg -> this.chatService.handleChatMessage(roomId, msg))
                 .subscribe();
 
         Mono<ChatMessage> initMono = chatService.getAllUsers(roomId).collectList()
                 .map(this::createInitMessage);
+
+        Consumer<SignalType> cleanup = createCleanup(room, session);
 
         //Send messages received from the room's sink which pipes messages received from redis.
         return session.send(
@@ -77,7 +77,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
     }
 
     /**
-     * Decrement connCnt of the LocalRoom instance. If connCnt == 0 afterwards, remove the room via room manager.
+     * Decrement connCnt of the LocalRoom instance. If connCnt == 0 afterwards, remove the room chatService.
      */
     private Consumer<SignalType> createCleanup(LocalRoom localRoom, WebSocketSession session) {
         return (sig) -> {

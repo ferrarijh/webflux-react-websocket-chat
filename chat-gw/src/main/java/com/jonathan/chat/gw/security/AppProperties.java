@@ -1,4 +1,4 @@
-package com.jonathan.chat.user.config.properties;
+package com.jonathan.chat.gw.security;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,18 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class AppProperties {
 
-    @Value("${app.secret}")
+    @Value("${auth.secret}")
     private String secret;
 
-    @Value("${app.duration.access-token}")
-    private Integer accessTokenDuration;
-
-    @Value("${app.duration.refresh-token}")
-    private Integer refreshTokenDuration;
-
-    @Value("${role.user}")
+    @Value("${auth.role.user}")
     private String roleUser;
 
-    @Value("${app.issuer}")
+    @Value("${auth.issuer}")
     private String issuer;
 }

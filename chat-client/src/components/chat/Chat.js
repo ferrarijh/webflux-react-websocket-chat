@@ -87,7 +87,7 @@ const Chat = (props) => {
   }, []);
 
   useEffect(() => {
-    lastMessageRef.current.scrollIntoView({behavior: "smooth"});
+    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
   }, [messageList])
 
   // const test = () => {
@@ -97,7 +97,7 @@ const Chat = (props) => {
   return (
     <div className="Chat">
       <div className="Header">
-        Spread Love 
+        Spread Love
         {/* <button onClick={test}>TEST</button> */}
       </div>
       <div className="Body">
@@ -106,7 +106,7 @@ const Chat = (props) => {
             {messageList.map((msg, index) =>
               <Message username={username} message={msg} key={index} />
             )}
-            <div ref={lastMessageRef}/>
+            <div ref={lastMessageRef} />
           </div>
           <ChatInput username={username} socket={socket} />
         </div>

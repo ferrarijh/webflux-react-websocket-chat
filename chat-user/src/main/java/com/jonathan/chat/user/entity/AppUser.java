@@ -23,6 +23,6 @@ public class AppUser {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<AppUserRole> roles;
 }

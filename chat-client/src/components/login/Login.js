@@ -1,82 +1,167 @@
-import { LoadingStatus } from '../contexts/NetworkProvider';
+import { LoadingStatus as Status } from '../contexts/NetworkProvider';
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthProvider';
-import { MessageType as Type } from '../chat/Message';
 import Spinner from '../spinner/Spinner';
 import './Login.css';
 import Resources from '../../Resources';
 
-const baseUrl = "http://"+Resources.HOSTNAME+":"+Resources.PORT+"/chat/login";
+const baseUrl = "http://" + Resources.HOSTNAME + ":" + Resources.PORT + "/chat";
+const accessTokenUrl = baseUrl + "/user/signin";
+const validateTokenUrl = baseUrl + "/validate-token";
 
 const Login = () => {
 
     const navigate = useNavigate();
-    const {isAuth, setIsAuth, setUsername} = useContext(AuthContext);
-    const [status, setStatus] = useState(LoadingStatus.IDLE);
+    const { isAuth, setIsAuth, setUsername } = useContext(AuthContext);
+    const [status, setStatus] = useState(Status.IDLE);
 
+    /* If already authenticated, navigate to Rooms component */
     useEffect(() => {
-        if(isAuth)
-            navigate("../rooms", {replace: true});
+        if (isAuth)
+            navigate("../rooms", { replace: true });
     }, [isAuth]);
+    
+    const setAuthenticated = (username) => {
+        setStatus(Status.IDLE);
+        setUsername(username);
+        setIsAuth(true);
+    }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        let newUsername = e.currentTarget.username.value;
-        if(newUsername === ""){
-            alert("Username can't be nothing!");
+    /* Check if the browser has access token */ 
+    useEffect(async () => {
+        console.log("useEffect() with empty dependencies called..");
+        if(status === Status.LOADING){
+            alert("Attempting to sign in... Please wait");
             return;
         }
 
-        setStatus(LoadingStatus.LOADING);
+        setStatus(Status.LOADING);
+        
+        let response = await fetch(validateTokenUrl, {
+            credentials: "include",
+            method: "GET"
+        }).catch(error => {
+            console.log(error);
+            setStatus(Status.DISCONNECTED);
+        });
 
-        let now = new Date().toISOString();
-        let data = await fetch(baseUrl, {
+        /* Cors error or disconnection */
+        if(!response)
+            return;
+
+        if(response.ok){
+            let data = await response.json();
+            setAuthenticated(data.username);
+            return;
+        }
+
+        switch (response.status) {
+            case 401:
+                setStatus(Status.HTTP_401);
+                break;
+            case 404:
+                setStatus(Status.HTTP_404);
+                break;
+            case 500:
+                setStatus(Status.HTTP_500);
+                break;
+            default:
+                setStatus(Status.UNKNOWN);
+        }
+    }, [])
+
+    const displayStatus = () => {
+        switch (status) {
+            case Status.LOADING:
+                return <Spinner />;
+            case Status.HTTP_401:
+                return <></>;
+            case Status.HTTP_404:
+                return <span><i>Username not found. Please try again, or sign up!</i></span>
+            case Status.HTTP_500:
+                return <span><i>Internal Server Error :(</i></span>;
+            case Status.DISCONNECTED:
+                return <span><i>Can't connect with the server :(</i></span>;
+            case Status.UNKNOWN:
+                return <span><i>Unknown Error :(</i></span>
+        }
+    }
+
+    const handleSignInSubmit = async (e) => {
+        e.preventDefault();
+
+        if(status === Status.LOADING){
+            alert("Attempting to sign in... Please wait");
+            return;
+        }
+
+        let username = e.currentTarget.username.value;
+        let password = e.currentTarget.password.value;
+        if (username === "" || password === "") {
+            alert("Please fill in both username and password.");
+            return;
+        }
+
+        setStatus(Status.LOADING);
+
+        let response = await fetch(accessTokenUrl, {
+            credentials: 'include',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': "application/json"
             },
             body: JSON.stringify({
-                username: newUsername,
-                date: now,
-                type: Type.IN_REQ
+                username: username,
+                password: password
             })
-        }).then(resp => resp.json())
-        .catch(error => {
-            setStatus(LoadingStatus.ERROR);
-            alert("Error: "+error);
+        }).catch(error => {
+            setStatus(Status.DISCONNECTED);
+            alert("Error: " + error);
             console.log("Error: ", error);
         });
 
-        if(!data)
+        if (!response)
             return;
 
-        if(data.type === Type.IN_OK)
-            onInOk(data);
-        else
-            alert("Login rejected... response: "+JSON.stringify(data));
-    };
+        if (response.ok) {
+            setAuthenticated(username);
+            return;
+        }
 
-    const onInOk = (data) => {
-        setStatus(LoadingStatus.IDLE);
-        setUsername(data.username);
-        setIsAuth(true);
+        let errorData = await response.json();
+
+        /* Error Cases */
+        switch (response.status) {
+            case 404:
+                setStatus(Status.HTTP_404);
+                break;
+            case 500:
+                setStatus(Status.HTTP_500);
+                break;
+            default:
+                alert("Unknown Error: " + errorData.message);
+                setStatus(Status.UNKNOWN);
+                console.log(errorData);
+        }
     };
 
     return (
         <div className="Login">
             <div className="LoginContainer">
                 <p className="WelcomeGuide">Mood to chat?</p>
-                <div className="Status">
-                    {status === LoadingStatus.LOADING && <Spinner/>}
-                    {status === LoadingStatus.ERROR && <span><i>Can't connect with the server :(</i></span>}
-                </div>
-                <form className="LoginForm" onSubmit={handleSubmit}>
-                    <input type="text" className="Text" name='username' placeholder=" username"/><br/>
-                    <button type="submit" className="Button">Join Chat</button>
+
+                <div className="Status">{displayStatus()}</div>
+
+                <form className="LoginForm" onSubmit={handleSignInSubmit}>
+                    <input type="text" className="Username" name='username' placeholder=" username" /><br />
+                    <input type="password" className="Password" name='password' placeholder=" password" /><br />
+                    <button type="submit" className="Button">Sign in</button>
                 </form>
+
+                <Link to="../join"><div className="Link">Sign Up</div></Link>
             </div>
-            <div className="Space"/>
+            <div className="Space" />
         </div>
     );
 };

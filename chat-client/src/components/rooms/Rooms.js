@@ -8,16 +8,15 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthProvider';
 
 const baseUrl = "http://"+Resources.HOSTNAME +":"+Resources.PORT+"/chat";
-const roomBaseUrl = baseUrl + "/room";
-const roomsBaseUrl = baseUrl + "/rooms";
-const roomChatBaseUrl = roomBaseUrl + "/chat";
+const roomUrl = baseUrl + "/room";
+const roomsUrl = baseUrl + "/rooms";
 
 const Rooms = () => {
 
     const navigate = useNavigate();
     const [roomList, setRoomList] = useState([]);
     const [status, setStatus] = useState(Status.IDLE);
-    const {isAuth} = useContext(AuthContext);
+    const {isAuth, username} = useContext(AuthContext);
 
     useEffect(() => {
         console.log("Rooms().. isAuth="+isAuth);
@@ -29,22 +28,25 @@ const Rooms = () => {
     const updateRoomList = async () => {
         setStatus(Status.LOADING);
 
-        let newRoomList = await fetch(roomsBaseUrl, {
+        let data = await fetch(roomsUrl, {
+            credentials: 'include',
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
         }).then(resp => resp.json())
         .catch(err => {
-            setStatus(Status.ERROR);
+            setStatus(Status.DISCONNECTED);
             console.log(err);
         });
 
-        if(!newRoomList)
+        if(!data.list){
+            console.log(data.message);
             return;
+        }
 
         setStatus(Status.IDLE);
-        setRoomList(newRoomList);
+        setRoomList(data.list);
     }
 
     const handleSubmit = e => {
@@ -58,7 +60,8 @@ const Rooms = () => {
     };
 
     const createRoom = async (title) => {
-        let response = await fetch(roomBaseUrl, {
+        let response = await fetch(roomUrl, {
+            credentials: 'include',
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -66,7 +69,7 @@ const Rooms = () => {
             body: JSON.stringify({title: title})
         }).catch(err => {
             alert("Server not responding.. Error: "+err);
-            setStatus(Status.ERROR);
+            setStatus(Status.DISCONNECTED);
         });
 
         if(!response)
@@ -87,20 +90,22 @@ const Rooms = () => {
                 return roomList.length === 0 && <div className="NoRoomGuide">There are no rooms right now.</div>;
             case Status.LOADING:
                 return <div className="SpinnerContainer"><Spinner/></div>;
-            case Status.ERROR:
+            case Status.DISCONNECTED:
                 return <div className="ErrorGuide">Failed to connect with the server :(</div>;
         }
     }
 
     return (
         <div className="Rooms">
-            <div className="UpdateRoomList">
-                <button className="UpdateRoomListButton" onClick={updateRoomList}>Update Room List</button>
-            </div>
+            <div className='Header'>Welcome, {username}</div>
+
+            <button className="UpdateRoomListButton" onClick={updateRoomList}>Update Room List</button>
+
             <form className="CreateRoomForm" onSubmit={handleSubmit}>
                 <input type="text" className="Text" name="titleInput" placeholder="Room Title" /><br />
                 <button type="submit" className="Button">Create Chat Room</button>
             </form>
+
             <table className="Table">
                 <thead>
                     <tr>
@@ -110,10 +115,11 @@ const Rooms = () => {
                 </thead>
                 <tbody>
                     {roomList.map((room) => 
-                        <RoomThumbnail key={room.id} room={room} baseUrl={roomsBaseUrl} updateRoomList={updateRoomList}/>
+                        <RoomThumbnail key={room.id} room={room} baseUrl={roomsUrl} updateRoomList={updateRoomList}/>
                     )}
                 </tbody>
             </table>
+
             <div className="Guide">{renderGuide()}</div>
         </div>
     );

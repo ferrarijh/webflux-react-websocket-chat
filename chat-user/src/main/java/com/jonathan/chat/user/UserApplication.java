@@ -23,6 +23,8 @@ public class UserApplication {
             userService.addRole(new AppUserRole(null, "ROLE_USER"));
             userService.addRole(new AppUserRole(null, "ROLE_ADMIN"));
             userService.addRole(new AppUserRole(null, "ROLE_ADMIN_TRAINEE"));
+
+
         };
     }
 }
