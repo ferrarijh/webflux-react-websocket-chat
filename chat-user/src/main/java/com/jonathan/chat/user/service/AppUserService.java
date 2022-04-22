@@ -70,7 +70,7 @@ public class AppUserService {
 
         String refreshToken = JWT.create()
                 .withSubject(principal.getUsername())
-                .withExpiresAt(new Date(now + props.getAccessTokenDuration()* 60 * 1000))
+                .withExpiresAt(new Date(now + props.getRefreshTokenDuration() * 86400 * 1000))
                 .withIssuer(props.getIssuer())
                 .sign(hmac256);
         return new TokenPair(accessToken, refreshToken);

@@ -42,13 +42,14 @@ public class AppUserController {
         Cookie atCookie = new Cookie("access_token", tokens.getAccessToken());
         Cookie rtCookie = new Cookie("refresh_token", tokens.getRefreshToken());
 
-//        atCookie.setMaxAge(props.getAccessTokenDuration() * 60);
-        atCookie.setMaxAge(-1);
+        atCookie.setMaxAge(props.getAccessTokenDuration() * 60);
+//        atCookie.setMaxAge(-1);
         atCookie.setHttpOnly(true);
         atCookie.setPath("/");
         atCookie.setDomain("127.0.0.1");
-//        rtCookie.setMaxAge(props.getRefreshTokenDuration() * 86400);
-        rtCookie.setMaxAge(-1);
+
+        rtCookie.setMaxAge(props.getRefreshTokenDuration() * 86400);
+//        rtCookie.setMaxAge(-1);
         rtCookie.setHttpOnly(true);
         rtCookie.setPath("/");
         rtCookie.setDomain("127.0.0.1");
