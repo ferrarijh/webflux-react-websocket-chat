@@ -1,18 +1,29 @@
 # webflux-react-websocket-chat
-Scalable WebSocket chat service with Spring React, Spring WebFlux and Redis.
+Scalable WebSocket chat service with React, Spring Web MVC/WebFlux, Redis and MySQL.
 
 ## Stack
-<div>
-	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/chat-drawio.png">
-</div>
-<hr/>
 
 Backend:
 - Spring WebFlux
 - Redis: For chat room implementation. Messages are sent and received via respective Pub/Sub channel associated with each room. Respective collection of users per room is stored as a sorted set.
+- MySQL: User Database.
 
 Frontend:
 - React
+
+## Architecture
+
+#### Service architecture:
+<div>
+	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/chat-architecture-whole.drawio.png">
+</div>
+
+<hr/>
+
+#### Chat architecture:
+<div>
+	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/chat-architecture-chat.drawio.png">
+</div>
 
 ## Demo
 <div>
@@ -31,6 +42,7 @@ React app running on port 3000 and 3001 send requests respectively to port 8080'
 
 ## Troubleshooting
 
+### Windows Port Binding Issue
 Occasionally on windows, docker may complain that it failed to bind to specified ports. This is due to windows blocking a range of ports on startup. Such ports can be checked with command:
 
 `netsh interface ipv4 show excludedportrange protocol=tcp`
