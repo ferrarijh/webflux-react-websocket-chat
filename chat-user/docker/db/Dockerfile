@@ -1,0 +1,4 @@
+FROM mysql:8.0.28
+
+ENV MYSQL_ROOT_PASSWORD password
+ENV MYSQL_DATABASE user_db

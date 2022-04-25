@@ -97,7 +97,7 @@ const Rooms = () => {
 
     return (
         <div className="Rooms">
-            <div className='Header'>Welcome, {username}</div>
+            <div className="Header">Welcome, {username}</div>
 
             <button className="UpdateRoomListButton" onClick={updateRoomList}>Update Room List</button>
 

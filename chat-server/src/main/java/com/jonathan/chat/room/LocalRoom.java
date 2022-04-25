@@ -18,25 +18,26 @@ public class LocalRoom {
         this.title = title;
     }
 
-    public void handleChatMessage(ChatMessage msg){
-        ChatMessage.Type type = ChatMessage.Type.valueOf(msg.getType());
-        switch(type){
-            case USER_IN:
-                handleUserIn(msg);
-                break;
-            case USER_OUT:
-                handleUserOut(msg);
-                break;
-        }
-    }
+//    TODO("check if connCnt is necessary")
+//    public void handleChatMessage(ChatMessage msg){
+//        ChatMessage.Type type = ChatMessage.Type.valueOf(msg.getType());
+//        switch(type){
+//            case USER_IN:
+//                handleUserIn(msg);
+//                break;
+//            case USER_OUT:
+//                handleUserOut(msg);
+//                break;
+//        }
+//    }
 
-    private void handleUserIn(ChatMessage msg){
-        this.connCnt.incrementAndGet();
-    }
-
-    private void handleUserOut(ChatMessage msg){
-        this.connCnt.decrementAndGet();
-    }
+//    private void handleUserIn(ChatMessage msg){
+//        this.connCnt.incrementAndGet();
+//    }
+//
+//    private void handleUserOut(ChatMessage msg){
+//        this.connCnt.decrementAndGet();
+//    }
 
     public void removeUser(String userId){
         this.connCnt.decrementAndGet();

@@ -25,7 +25,6 @@ spring:
             - Path=/chat/room/**, /chat/rooms/**, /chat/login
           filters:
             - GWAuthFilter
-#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
 auth:
   secret: secret
@@ -36,4 +35,4 @@ auth:
 
 logging:
   level:
-    root: trace
+    root: info
