@@ -6,39 +6,44 @@ Scalable WebSocket chat service with React, Spring Web MVC/WebFlux, Redis and My
 Backend:
 - Spring WebFlux
 - Redis: For chat room implementation. Messages are sent and received via respective Pub/Sub channel associated with each room. Respective collection of users per room is stored as a sorted set.
-- MySQL: User Database.
+- MySQL: For user database.
 
 Frontend:
 - React
 
-## Architecture
+## Architecture & diagram
 
 #### Service architecture:
 <div>
 	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/chat-architecture-whole.drawio.png">
 </div>
+<br/>
+Gateway receives requests at `127.0.0.1:8080` and load-balances authorized requests to respective chat servers.
 
-<hr/>
-
-#### Chat architecture:
+#### Chat diagram:
 <div>
 	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/chat-architecture-chat.drawio.png">
 </div>
 
 ## Demo
+
+### Sign up & Sign In
 <div>
-	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/demo.gif">
+	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/demo-join-login.gif">
+</div>
+
+### Sign In & Chat
+<div>
+	<img src="https://github.com/ferrarijh/webflux-react-websocket-chat/blob/master/demo/demo-login-chat.gif">
 </div>
 
 ## How to run
 Assuming docker is installed and running,
 
 1. Clone repository.
-2. Execute `build.sh` which builds `chat-server`. This requires jdk11. (`chat-client` will be built in the docker container)
+2. Execute `build.sh` which builds all sub projects. (requires jdk11)
 3. Run command `docker compose up -d` at the project root directory.
-4. Go to `http://localhost:3000` or `http://localhost:3001` to start chatting.
-
-React app running on port 3000 and 3001 send requests respectively to port 8080's and 8081's Spring Application.
+4. Go to `http://127.0.0.1:3000` to sign up and start chatting.
 
 ## Troubleshooting
 
