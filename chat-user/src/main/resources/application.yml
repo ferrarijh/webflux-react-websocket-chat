@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: chat-user-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_db
+    username: root
+    password: password
+    hikari:
+      connectionTimeout: 60000
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  jackson:
+    serialization:
+      indent_output: true
+
+#################################################
+##################### DB ########################
+
+role:
+  user: ROLE_USER
+  admin: ROLE_ADMIN
+
+app:
+  secret: secret
+  duration:
+    # in minutes
+    access-token: 30
+    # in days
+    refresh-token: 30
+  issuer: chat-user-service/chat/user/signin
+
+server:
+  error:
+    include-message: always
+
+#################################################
+################### Eureka ######################
+
+eureka:
+#  instance:
+#    prefer-ip-address: true
+  client:
+    service-url:
+      default-zone: http://localhost:8761
+
+logging:
+  level:
+    root: debug

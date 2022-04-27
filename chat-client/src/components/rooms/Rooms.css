@@ -1,0 +1,87 @@
+.Rooms {
+    height: 100%;
+    width: 100%;
+
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Header {
+    width: 90%;
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.UpdateRoomListButton {
+    display: block;
+    width: 90%;
+    font-size: 2rem;
+    border-radius: 3px;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+}
+
+.UpdateRoomListButton:hover {
+    background-color: #ddd;
+}
+
+.UpdateRoomListButton:active {
+    background-color: #bbb;
+}
+
+.CreateRoomForm {
+    margin-top: 10px;
+    width: 90%;
+    font-size: 1.3rem;
+}
+
+.CreateRoomForm > .Text {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+}
+
+.CreateRoomForm > .Button {
+    width: 10em;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+}
+
+.Table {
+    width: 90%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.RoomThumbnail:nth-child(odd){
+    background-color: #ddf;
+}
+
+td, th {
+    font-size: 1rem;
+    border: 1px solid #dddddd;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 8px 20px 8px 20px;
+}
+
+.Guide {
+    margin-top: 10px;
+}
+
+.NoRoomGuide {
+    color: #aaa;
+}
+
+.ErrorGuide {
+    color: red;
+    font-size: 1.3rem;
+    font-style: italic;
+}

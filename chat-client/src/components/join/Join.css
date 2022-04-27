@@ -1,0 +1,70 @@
+.Join {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #f8f8f8;
+}
+
+.JoinContainer {
+    /* flex: 2; */
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.WelcomeGuide {
+    margin-left: 10px;
+    font-size: 2em;
+    text-align: left;
+    color: #bbb;
+    font-style: italic;
+}
+
+.Status {
+    text-align: center;
+    color: #f66;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.JoinForm > label {
+    font-size: 1.3rem;
+    margin-left: 0.2rem;
+    font-weight: bold;
+}
+
+.JoinForm > input { 
+    border-radius: 3px;
+    height: 2em;
+    width: 400px;
+    margin-top: 0.3rem;
+    border: 1px solid #e0e0e0;
+    background-color: transparent;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 1.3em;
+}
+
+.JoinForm > button { 
+    border-radius: 3px;
+    height: 2em;
+    width: 400px;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 1.3em;
+}
+
+.JoinForm > .ConflictWarning {
+    color: red;
+    font-size: 1.1rem;
+}
+
+.Button:hover {background-color: #ddd;}
+.Button:active {background-color: #bbb;}
