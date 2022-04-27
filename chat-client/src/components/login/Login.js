@@ -58,7 +58,7 @@ const Login = () => {
 
         switch (response.status) {
             case 401:
-                setStatus(Status.HTTP_401);
+                setStatus(Status.IDLE);
                 break;
             case 404:
                 setStatus(Status.HTTP_404);
@@ -76,7 +76,7 @@ const Login = () => {
             case Status.LOADING:
                 return <Spinner />;
             case Status.HTTP_401:
-                return <></>;
+                return <span><i>Incorrect password. Please try again.</i></span>;
             case Status.HTTP_404:
                 return <span><i>Username not found. Please try again, or sign up!</i></span>
             case Status.HTTP_500:
@@ -133,6 +133,9 @@ const Login = () => {
 
         /* Error Cases */
         switch (response.status) {
+            case 401:
+                setStatus(Status.HTTP_401);
+                break;
             case 404:
                 setStatus(Status.HTTP_404);
                 break;
