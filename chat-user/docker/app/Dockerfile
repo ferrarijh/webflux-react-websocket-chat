@@ -6,4 +6,6 @@ WORKDIR /app
 
 COPY ${JAR_FILE} ./chat-user-app.jar
 
-ENTRYPOINT ["java", "-jar", "chat-user-app.jar", "--spring.datasource.url=${USER_DB_HOST}"]
+RUN printenv
+
+ENTRYPOINT ["java", "-jar", "chat-user-app.jar", "--app.datasource.url=${USER_DB_HOST}"]

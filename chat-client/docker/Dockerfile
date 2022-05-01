@@ -5,7 +5,7 @@ RUN mkdir /app
 WORKDIR /app
 
 # copy build
-COPY ./build .
+COPY ./build ./build
 
 # install serve
 RUN npm i -g serve

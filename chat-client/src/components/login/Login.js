@@ -66,6 +66,9 @@ const Login = () => {
             case 500:
                 setStatus(Status.HTTP_500);
                 break;
+            case 503:
+                setStatus(Status.HTTP_503);
+                break;
             default:
                 setStatus(Status.UNKNOWN);
         }
@@ -78,13 +81,15 @@ const Login = () => {
             case Status.HTTP_401:
                 return <span><i>Incorrect password. Please try again.</i></span>;
             case Status.HTTP_404:
-                return <span><i>Username not found. Please try again, or sign up!</i></span>
+                return <span><i>Username not found. Please try again, or sign up!</i></span>;
             case Status.HTTP_500:
                 return <span><i>Internal Server Error :(</i></span>;
+            case Status.HTTP_503:
+                return <span><i>Service Unavailable :(</i></span>;
             case Status.DISCONNECTED:
                 return <span><i>Can't connect with the server :(</i></span>;
             case Status.UNKNOWN:
-                return <span><i>Unknown Error :(</i></span>
+                return <span><i>Unknown Error :(</i></span>;
         }
     }
 
