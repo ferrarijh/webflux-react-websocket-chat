@@ -1,15 +1,42 @@
 version: '3.9'
 
 services:
+  chat-eureka:
+    hostname: eurekahost
+    build:
+      context: ./chat-eureka
+      dockerfile: docker/Dockerfile
+    ports: 
+      - 8761:8761
+    networks:
+      - chat-net
+
+  chat-gw:
+    hostname: gwhost
+    build:
+      context: ./chat-gw
+      dockerfile: docker/Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eurekahost:8761/eureka/
+    depends_on:
+      - chat-eureka
+    networks:
+      - chat-net
+
   chat-server-1:
     hostname: serverhost-1
     build: 
       context: ./chat-server
+      dockerfile: docker/Dockerfile
     ports:
-      - 8080:8080
+      - 8081:8080
     environment:
       - REDIS_HOST=redishost
+      - eureka.client.serviceUrl.defaultZone=http://eurekahost:8761/eureka/
     depends_on:
+      - chat-eureka
       - redis
     networks: 
       - chat-net
@@ -18,47 +45,60 @@ services:
     hostname: serverhost-2
     build:
       context: ./chat-server
+      dockerfile: docker/Dockerfile
     ports:
-      - 8081:8080
+      - 8082:8080
     environment:
       - REDIS_HOST=redishost
+      - eureka.client.serviceUrl.defaultZone=http://eurekahost:8761/eureka/
     depends_on: 
+      - chat-eureka
       - redis
     networks: 
       - chat-net
 
-  chat-client-1:
-    hostname: clienthost-1
-    build: 
-      context: ./chat-client
-      args:
-        - REACT_APP_SERVER_PORT=8080
+  chat-user:
+    hostname: userhost
+    build:
+      context: ./chat-user
+      dockerfile: docker/app/Dockerfile
     ports:
-      - 3106:3000
-    # environment: 
-    #   - REACT_APP_SERVER_PORT=8080
+      - 8083:8080
+    environment:
+      - "USER_DB_HOST=jdbc:mysql://userdbhost:3306/user_db"
+      - eureka.client.serviceUrl.defaultZone=http://eurekahost:8761/eureka/
+    depends_on:
+      - chat-eureka
+      - user-db
     networks: 
       - chat-net
 
-  chat-client-2:
-    hostname: clienthost-2
+  chat-client:
+    hostname: clienthost
     build: 
       context: ./chat-client
-      args:
-        - REACT_APP_SERVER_PORT=8081
+      dockerfile: docker/Dockerfile
     ports:
-      - 3107:3000
-    # environment: 
-    #   - REACT_APP_SERVER_PORT=8081
+      - 3000:3000
     networks: 
       - chat-net
 
   redis:
     hostname: redishost
     image: redis
-    expose:
+    ports:
       - 6379:6379
     networks: 
+      - chat-net
+
+  user-db:
+    hostname: userdbhost
+    build:
+      context: ./chat-user
+      dockerfile: docker/db/Dockerfile
+    ports:
+      - 3306:3306
+    networks:
       - chat-net
 
 networks:

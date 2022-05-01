@@ -28,12 +28,12 @@ function App() {
                                 // </RequireAuth>
                             } />
                             <Route path="rooms" element={
-                                <RequireAuth requireAuth={true}>
+                                <RequireAuth>
                                     <Rooms />
                                 </RequireAuth>
                             } />
                             <Route path="room/chat/:roomId" element={
-                                <RequireAuth requireAuth={true}>
+                                <RequireAuth>
                                     <Chat />
                                 </RequireAuth>
                             } />

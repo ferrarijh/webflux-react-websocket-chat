@@ -29,7 +29,8 @@ public class ChatService {
     private final ConcurrentHashMap<String, Disposable> subscriptions = new ConcurrentHashMap<>();  //key=roomId
 
     /**
-     * Subscribe to channel associated with room id. Incoming messages are piped to respective room's sink. Subscription is idempotent.
+     * Subscribe to a message channel associated with the room id. After subscription, the app starts receiving and
+     * sending messages from and to the room. Incoming messages are piped to respective room's sink. Subscription is idempotent.
      */
     public void subscribe(String roomId) {
         subscriptions.computeIfAbsent(roomId, rid ->
@@ -88,6 +89,7 @@ public class ChatService {
                         .remove(roomUsersKey, message.getUsername())
                         .then(redisTemplate.hasKey(roomUsersKey)
                                 .filter(ex -> !ex)
+
                                 //delete room title if there's no user in the zset.
                                 .flatMap(__ -> redisTemplate.opsForZSet().delete(roomTitleKey))
                         ).then();
@@ -152,6 +154,5 @@ public class ChatService {
     public LocalRoom createLocalRoom(String roomId){
         return this.localRoomManager.createRoom(roomId, null);
     }
-
 
 }

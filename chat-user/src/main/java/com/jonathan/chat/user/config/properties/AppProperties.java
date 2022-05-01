@@ -24,4 +24,18 @@ public class AppProperties {
 
     @Value("${app.issuer}")
     private String issuer;
+
+    //============= hikari config ================
+    @Value("${app.datasource.username}")
+    private String dbUsername;
+
+    @Value("${app.datasource.password}")
+    private String dbPassword;
+
+    @Value("${app.datasource.url}")
+    private String dbUrl;
+
+    @Value("${app.datasource.connectionTimeout}")
+    private Long dbConnTimeout;
+
 }

@@ -9,12 +9,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @SpringBootApplication
 public class UserApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UserApplication.class);
+        SpringApplication app = new SpringApplication(UserApplication.class);
+        String hostFromEnv = System.getenv("USER_DB_HOST");
+        if(hostFromEnv != null)
+            app.setDefaultProperties(Map.of("app.datasource.url", hostFromEnv));
+        app.run(args);
     }
 
     @Bean
@@ -23,8 +28,6 @@ public class UserApplication {
             userService.addRole(new AppUserRole(null, "ROLE_USER"));
             userService.addRole(new AppUserRole(null, "ROLE_ADMIN"));
             userService.addRole(new AppUserRole(null, "ROLE_ADMIN_TRAINEE"));
-
-
         };
     }
 }

@@ -2,12 +2,12 @@ spring:
   application:
     name: chat-user-service
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/user_db
-    username: root
-    password: password
-    hikari:
-      connectionTimeout: 60000
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/user_db
+#    username: root
+#    password: password
+#    hikari:
+#      connectionTimeout: 60000
 
   jpa:
     hibernate:
@@ -38,6 +38,12 @@ app:
     refresh-token: 30
   issuer: chat-user-service/chat/user/signin
 
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_db
+    username: root
+    password: password
+    connectionTimeout: 60000
+
 server:
   error:
     include-message: always
@@ -52,6 +58,12 @@ eureka:
     service-url:
       default-zone: http://localhost:8761
 
+#################################################
+################### Logging #####################
+
 logging:
   level:
-    root: debug
+    com:
+      zaxxer: debug
+
+    root: info

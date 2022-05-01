@@ -9,6 +9,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - http://127.0.0.1:3000
+              - http://localhost:3000
             allow-credentials: true
             allowedHeaders: '*'
             allowedMethods:
@@ -25,7 +26,6 @@ spring:
             - Path=/chat/room/**, /chat/rooms/**, /chat/login
           filters:
             - GWAuthFilter
-#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
 auth:
   secret: secret
@@ -36,4 +36,4 @@ auth:
 
 logging:
   level:
-    root: trace
+    root: info
