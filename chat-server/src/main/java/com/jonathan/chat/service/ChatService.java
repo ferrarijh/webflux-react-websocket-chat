@@ -84,7 +84,7 @@ public class ChatService {
                 zsetOp = redisTemplate.opsForZSet()
                         .remove(roomUsersKey, message.getUsername())
                         .then(redisTemplate.hasKey(roomUsersKey)
-                                .filter(ex -> !ex)
+                                .filter(ex -> ex == false)
 
                                 //delete room title if there's no user in the zset.
                                 .flatMap(__ -> redisTemplate.opsForZSet().delete(roomTitleKey))

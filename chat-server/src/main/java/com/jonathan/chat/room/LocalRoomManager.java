@@ -21,9 +21,6 @@ public class LocalRoomManager {
     //TODO("type may be replaced with HashMap since keys are UUID")
     private final ConcurrentMap<String, LocalRoom> roomMap = new ConcurrentHashMap<>();
 
-    /* key=title */
-//    private final ConcurrentMap<String, String> titleToRoomIdMap = new ConcurrentHashMap<>();
-
     private final AppMapper mapper;
 
     public LocalRoom createRoom(RoomThumbnail thumbnail){
@@ -37,7 +34,6 @@ public class LocalRoomManager {
         return localRoom;
     }
 
-
     public boolean isPresent(String roomId){
         return this.roomMap.get(roomId) != null;
     }
@@ -49,8 +45,4 @@ public class LocalRoomManager {
     public void removeRoom(String roomId) {
         this.roomMap.remove(roomId);
     }
-
-//    public void removeRoom(LocalRoom room){
-//        this.roomMap.remove(room.getId());
-//    }
 }
