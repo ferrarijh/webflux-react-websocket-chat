@@ -48,7 +48,8 @@ public class LocalRoom {
     public String getTitle(){ return this.title; }
 
     public boolean isEmpty(){
-        return this.connCnt.get() == 0;
+//        return this.connCnt.get() == 0;
+        return this.getNumOfLocalChatters() == 0;
     }
 
     public Sinks.EmitResult tryEmitNext(ChatMessage msg){
@@ -57,5 +58,9 @@ public class LocalRoom {
 
     public Flux<ChatMessage> getSinkAsFlux(){
         return this.sink.asFlux();
+    }
+
+    public int getNumOfLocalChatters(){
+        return this.sink.currentSubscriberCount();
     }
 }
