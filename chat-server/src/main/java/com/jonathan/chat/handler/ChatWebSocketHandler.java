@@ -83,7 +83,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
         return (sig) -> {
             log.info("signal={}", sig.name());
             String offUsername = this.sessionIdToUserMap.get(session.getId());
-            localRoom.removeUser(offUsername);
             if (localRoom.isEmpty())
                 chatService.removeLocalRoom(localRoom.getId());
             this.sessionIdToUserMap.remove(session.getId());

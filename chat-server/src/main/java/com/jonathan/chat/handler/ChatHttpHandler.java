@@ -21,7 +21,6 @@ import java.util.UUID;
 @Slf4j
 public class ChatHttpHandler {
 
-    private final LocalRoomManager localRoomManager;
     private final ChatService chatService;
 
     public Mono<ServerResponse> createRoom(ServerRequest request) {
@@ -55,8 +54,8 @@ public class ChatHttpHandler {
         String id = request.pathVariable("id");
         return chatService.getRoomThumbnail(id)
                 .flatMap(thumbnail -> {
-                    if (!localRoomManager.isPresent(id))
-                        localRoomManager.createRoom(thumbnail);
+                    if (!chatService.isLocalRoomPresent(id))
+                        chatService.createLocalRoom(thumbnail);
                     return ServerResponse.ok().bodyValue(thumbnail);
                 }).switchIfEmpty(ServerResponse.notFound().build())
                 .doOnError(Throwable::printStackTrace);

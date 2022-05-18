@@ -14,11 +14,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.jonathan.chat.dto.ChatMessage.Type.*;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +84,7 @@ public class ChatService {
                 zsetOp = redisTemplate.opsForZSet()
                         .remove(roomUsersKey, message.getUsername())
                         .then(redisTemplate.hasKey(roomUsersKey)
-                                .filter(ex -> !ex)
+                                .filter(ex -> ex == false)
 
                                 //delete room title if there's no user in the zset.
                                 .flatMap(__ -> redisTemplate.opsForZSet().delete(roomTitleKey))
@@ -155,4 +151,11 @@ public class ChatService {
         return this.localRoomManager.createRoom(roomId, null);
     }
 
+    public LocalRoom createLocalRoom(RoomThumbnail thumbnail){
+        return this.localRoomManager.createRoom(thumbnail.getId(), thumbnail.getTitle());
+    }
+
+    public boolean isLocalRoomPresent(String roomId){
+        return localRoomManager.isPresent(roomId);
+    }
 }
