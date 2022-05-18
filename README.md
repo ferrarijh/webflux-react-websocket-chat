@@ -53,3 +53,9 @@ Occasionally on windows, docker may complain that it failed to bind to specified
 `netsh interface ipv4 show excludedportrange protocol=tcp`
 
 In such case you may want to rewrite `docker-compose.yml` so contaiers can bind to available ports.
+
+### M1 Mac Docker Mysql Issue
+Mysql does not provide `linux/arm64/v8` architecture version of mysql image for M1 Mac, but M1 Mac is capable of handling Intel-friendly version image, which is `linux/amd64`. Therefore the issue can be fixed simply by using `linux/amd64` version of Mysql image. To do so, follow the steps below.
+
+1. Open `webflux-react-websocket-chat/chat-user/docker/db/Dockerfile`
+2. Change the first line `FROM mysql:8.0.28` to `FROM --platform=linux/amd64 mysql:8.0.28`
