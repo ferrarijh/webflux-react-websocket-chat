@@ -42,6 +42,7 @@ Assuming docker is installed and running,
 
 1. Clone repository.
 2. Execute `build.sh` which builds all sub projects. (requires jdk11)
+    - If shell scripts or gradlew files aren't executing, run command `chmod u+x ${file_name}` to grant execute permissions on them
 3. Run command `docker compose up -d` at the project root directory.
 4. Go to `http://127.0.0.1:3000` to sign up and start chatting.
 
