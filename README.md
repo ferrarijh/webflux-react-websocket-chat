@@ -56,6 +56,12 @@ Occasionally on windows, docker may complain that it failed to bind to specified
 In such case you may want to rewrite `docker-compose.yml` so contaiers can bind to available ports.
 
 ### M1 Mac Docker Mysql Issue
+M1 Mac users are likely to encounter the following error message while pulling the mysql image from docker hub:
+
+```
+no matching manifest for linux/arm64/v8 in the manifest list entries
+```
+
 Mysql does not provide `linux/arm64/v8` architecture version of mysql image for M1 Mac, but M1 Mac is capable of handling Intel-friendly version image, which is `linux/amd64`. Therefore the issue can be fixed simply by using `linux/amd64` version of Mysql image. To do so, follow the steps below.
 
 1. Open `webflux-react-websocket-chat/chat-user/docker/db/Dockerfile`
