@@ -36,9 +36,6 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 
     private final ConcurrentMap<String, String> sessionIdToUserMap = new ConcurrentHashMap<>();
 
-    /**
-     * connCnt per room is incremented here.
-     */
     @Override
     public Mono<Void> handle(WebSocketSession session) {
         String[] pathArr = session.getHandshakeInfo().getUri().getPath().split("/");
@@ -77,7 +74,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
     }
 
     /**
-     * Decrement connCnt of the LocalRoom instance. If connCnt == 0 afterwards, remove the room chatService.
+     * Create cleanup consumer. This cleanup is executed after the session's subscription is cleared.
      */
     private Consumer<SignalType> createCleanup(LocalRoom localRoom, WebSocketSession session) {
         return (sig) -> {
