@@ -38,7 +38,7 @@ Gateway receives requests at `127.0.0.1:8080` and load-balances authorized reque
 </div>
 
 ## How to run
-Assuming docker is installed and running,
+Assuming docker, node and jdk11 is installed,
 
 1. Clone repository.
 2. Execute `build.sh` which builds all sub projects. (requires jdk11)
